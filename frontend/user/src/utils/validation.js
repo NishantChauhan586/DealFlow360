@@ -3,6 +3,8 @@
  * Pure validation logic for email, password, and automatic role detection.
  */
 
+import { getStoredAuthorities } from './authorityAuth';
+
 /**
  * Validates the email address or username input.
  * @param {string} input 
@@ -120,37 +122,72 @@ export function validatePassword(password) {
 }
 
 /**
- * Unified Authentication API with automatic role detection.
- * Determines whether user is an Admin or Customer from backend database record / email pattern.
+ * Unified Authentication API with automatic role detection and provisioned authority support.
  * @param {{ identifier: string, password: string }} params
  * @returns {{ success: boolean, user?: object, token?: string, error?: string }}
  */
 export function authenticateUser({ identifier, password }) {
-  const cleanEmail = (identifier || '').trim().toLowerCase();
+  const cleanId = (identifier || '').trim().toLowerCase();
   const rawPass = password || '';
 
   // Validate presence
-  if (!cleanEmail || !rawPass) {
-    return { success: false, error: 'Email and password are required.' };
+  if (!cleanId || !rawPass) {
+    return { success: false, error: 'Username/Email and password are required.' };
   }
 
-  // Automatic Role Detection:
-  // Emails/usernames containing 'admin' (e.g. tomadmin@gmail.com, admin@dealflow360.com, admin) -> Admin role
-  // Other valid emails (e.g. customer@gmail.com, user@acme.com) -> Customer role
-  const isAdminEmail = cleanEmail.includes('admin');
+  // 1. Check Provisioned Authorities First
+  const authorities = getStoredAuthorities();
+  const matchedAuth = authorities.find(a => 
+    (a.username && a.username.toLowerCase() === cleanId) ||
+    (a.email && a.email.toLowerCase() === cleanId) ||
+    (a.authorityId && a.authorityId.toLowerCase() === cleanId) ||
+    (a.id && a.id.toLowerCase() === cleanId)
+  );
+
+  if (matchedAuth) {
+    // Check credentials
+    if (matchedAuth.password === rawPass) {
+      return {
+        success: true,
+        user: {
+          id: matchedAuth.id || matchedAuth.authorityId,
+          authorityId: matchedAuth.authorityId || matchedAuth.id,
+          username: matchedAuth.username,
+          name: matchedAuth.fullName || matchedAuth.name,
+          email: matchedAuth.email,
+          role: 'admin', // Grants access to platform workspace
+          authorityRole: matchedAuth.role,
+          isFirstLogin: matchedAuth.isFirstLogin !== false,
+          isAuthority: true
+        },
+        token: `mock-jwt-auth-${matchedAuth.id || matchedAuth.authorityId}`
+      };
+    } else {
+      return {
+        success: false,
+        error: 'Invalid password. Please check your credentials.'
+      };
+    }
+  }
+
+  // 2. Automatic Role Detection for mock users:
+  // Emails/usernames containing 'admin' -> Admin role
+  // Other valid emails -> Customer role
+  const isAdminEmail = cleanId.includes('admin');
 
   // Derive human readable user name from email
-  const namePrefix = cleanEmail.split('@')[0];
+  const namePrefix = cleanId.split('@')[0];
   const formattedName = namePrefix.charAt(0).toUpperCase() + namePrefix.slice(1);
 
   if (isAdminEmail) {
     return {
       success: true,
       user: {
-        username: cleanEmail,
+        username: cleanId,
         name: formattedName.includes('Admin') ? formattedName : `${formattedName} (Admin)`,
-        email: cleanEmail.includes('@') ? cleanEmail : `${cleanEmail}@dealflow360.com`,
-        role: 'admin'
+        email: cleanId.includes('@') ? cleanId : `${cleanId}@dealflow360.com`,
+        role: 'admin',
+        isFirstLogin: false
       },
       token: 'mock-jwt-admin-token-778899'
     };
@@ -160,10 +197,11 @@ export function authenticateUser({ identifier, password }) {
   return {
     success: true,
     user: {
-      username: cleanEmail,
+      username: cleanId,
       name: formattedName.includes('Customer') ? formattedName : `${formattedName} (Client)`,
-      email: cleanEmail.includes('@') ? cleanEmail : `${cleanEmail}@acme.com`,
-      role: 'customer'
+      email: cleanId.includes('@') ? cleanId : `${cleanId}@acme.com`,
+      role: 'customer',
+      isFirstLogin: false
     },
     token: 'mock-jwt-customer-token-112233'
   };

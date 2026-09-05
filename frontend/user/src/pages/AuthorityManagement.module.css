@@ -283,6 +283,211 @@
   opacity: 1;
 }
 
+/* Status Badges */
+.statusBadgePending {
+  background: rgba(192, 122, 56, 0.12);
+  color: #9E5B20;
+  border: 1px solid rgba(192, 122, 56, 0.25);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 12px;
+  letter-spacing: 0.02em;
+}
+
+.statusBadgeActive {
+  background: rgba(46, 106, 96, 0.12);
+  color: #2E6A60;
+  border: 1px solid rgba(46, 106, 96, 0.25);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 12px;
+  letter-spacing: 0.02em;
+}
+
+/* Live Username Preview */
+.livePreview {
+  font-size: 11px;
+  color: var(--viridian-600, #438A7E);
+  font-weight: 600;
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Credential Success Modal Backdrop */
+.credentialBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 34, 28, 0.7);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.credentialModal {
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid rgba(8, 32, 26, 0.14);
+  box-shadow: 0 24px 48px rgba(0, 34, 28, 0.25);
+  width: 100%;
+  max-width: 500px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.credentialHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.credentialTag {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(67, 138, 126, 0.14);
+  color: #1A544A;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.credentialTitle {
+  font-family: var(--serif, 'Fraunces', serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--burnham, #00221C);
+  margin: 0;
+}
+
+.credentialCard {
+  background: #F8FAF9;
+  border: 1px solid rgba(67, 138, 126, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.credentialField {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #FFFFFF;
+  border: 1px solid rgba(8, 32, 26, 0.08);
+  border-radius: 8px;
+}
+
+.credentialFieldLabel {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(8, 32, 26, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.credentialFieldValue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.credentialCode {
+  font-family: monospace;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--burnham, #00221C);
+  background: #EEF4F2;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.copyButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: rgba(8, 32, 26, 0.5);
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.copyButton:hover {
+  color: var(--burnham, #00221C);
+  background: #E2ECE8;
+}
+
+.credentialNotice {
+  background: rgba(192, 122, 56, 0.08);
+  border-left: 3px solid #C07A38;
+  padding: 10px 12px;
+  border-radius: 0 6px 6px 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(8, 32, 26, 0.85);
+}
+
+.credentialActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.primaryBtn {
+  flex: 1;
+  height: 42px;
+  border-radius: 8px;
+  border: none;
+  background: var(--burnham, #00221C);
+  color: #FFFFFF;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.15s ease;
+}
+
+.primaryBtn:hover {
+  background: #00362C;
+}
+
+.secondaryBtn {
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(8, 32, 26, 0.2);
+  background: #FFFFFF;
+  color: var(--ink, #08201A);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.secondaryBtn:hover {
+  background: #F5F7F6;
+}
+
 /* Responsive adjustments */
 @media (max-width: 900px) {
   .gridTwoCol {

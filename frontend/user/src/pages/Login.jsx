@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 
 import { validateEmailOrUsername, validatePassword, authenticateUser } from '../utils/validation';
+import PermanentPasswordModal from '../components/PermanentPasswordModal';
 import styles from './Login.module.css';
 
 export default function Login({ onLoginSuccess }) {
@@ -36,6 +37,7 @@ export default function Login({ onLoginSuccess }) {
   const [authError, setAuthError] = useState('');
   const [authSuccess, setAuthSuccess] = useState(false);
   const [infoMessage, setInfoMessage] = useState('');
+  const [pendingFirstLoginUser, setPendingFirstLoginUser] = useState(null);
 
   // Accessibility IDs
   const usernameId = useId();
@@ -47,9 +49,10 @@ export default function Login({ onLoginSuccess }) {
   const usernameResult = validateEmailOrUsername(username);
   const passwordResult = validatePassword(password);
 
-  const isFormValid = usernameResult.isValid && passwordResult.isValid;
+  const isPasswordValid = mode === 'signup' ? passwordResult.isValid : password.trim().length > 0;
+  const isFormValid = usernameResult.isValid && isPasswordValid;
   const showUsernameError = usernameTouched && !usernameResult.isValid;
-  const showPasswordError = passwordTouched && !passwordResult.isValid;
+  const showPasswordError = passwordTouched && (mode === 'signup' ? !passwordResult.isValid : password.trim().length === 0);
 
   const togglePasswordVisibility = () => {
     setShowPassword(prev => !prev);
@@ -114,6 +117,12 @@ export default function Login({ onLoginSuccess }) {
       });
 
       if (authResponse.success) {
+        // Detect First Login Flow for Authority Provisioning
+        if (authResponse.user.isFirstLogin) {
+          setPendingFirstLoginUser(authResponse.user);
+          return;
+        }
+
         setAuthSuccess(true);
         if (typeof onLoginSuccess === 'function') {
           onLoginSuccess(authResponse.user);
@@ -130,7 +139,7 @@ export default function Login({ onLoginSuccess }) {
       } else {
         setAuthError(authResponse.error || 'Invalid email or password.');
       }
-    }, 1300);
+    }, 1000);
   };
 
   return (
@@ -227,17 +236,17 @@ export default function Login({ onLoginSuccess }) {
           {/* Form */}
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
             
-            {/* Email Address Field */}
+            {/* Email / Username Field */}
             <div className={styles.fieldGroup}>
               <label htmlFor={usernameId} className={styles.label}>
-                Email Address
+                Username or Email
               </label>
               <div className={styles.inputWrapper}>
                 <input
                   id={usernameId}
                   type="text"
                   className={`${styles.input} ${showUsernameError ? styles.inputError : ''}`}
-                  placeholder="Enter your email address"
+                  placeholder="Enter username or email address"
                   value={username}
                   onChange={(e) => {
                     setUsername(e.target.value);
@@ -322,7 +331,7 @@ export default function Login({ onLoginSuccess }) {
                   role="alert"
                 >
                   <AlertCircle size={13} />
-                  <span>{passwordResult.error}</span>
+                  <span>{mode === 'signup' ? passwordResult.error : 'Password is required'}</span>
                 </motion.div>
               )}
             </div>
@@ -420,13 +429,52 @@ export default function Login({ onLoginSuccess }) {
             className={styles.leafImage}
           />
           <div className={styles.rightPanelOverlay} />
-          <div className={styles.brandOverlayText}>
-            <h3>DealFlow360</h3>
-            <p>Intelligent, self-governing sales operations platform.</p>
+          <div className={styles.backdropGlow} />
+          
+          <div className={styles.featureShowcase}>
+            <div className={styles.chip}>
+              <Sparkles size={13} />
+              <span>Self-Governing Engine</span>
+            </div>
+
+            <h2 className={styles.showcaseTitle}>
+              Real-time sales ops governance.
+            </h2>
+            <p className={styles.showcaseBody}>
+              Enforce strict discount ceilings, live stock allocations, blended margin calculations, and automated multi-tier approval routing.
+            </p>
+
+            <div className={styles.statsCard}>
+              <div className={styles.statCol}>
+                <span className={styles.statNum}>100%</span>
+                <span className={styles.statLabel}>Policy Compliance</span>
+              </div>
+              <div className={styles.statDivider} />
+              <div className={styles.statCol}>
+                <span className={styles.statNum}>&lt; 5.4h</span>
+                <span className={styles.statLabel}>Avg Approval Turnaround</span>
+              </div>
+            </div>
           </div>
         </div>
-
       </motion.div>
+
+      {/* Mandatory First-Login Permanent Password Setup Modal */}
+      {pendingFirstLoginUser && (
+        <PermanentPasswordModal
+          user={pendingFirstLoginUser}
+          onPasswordSaved={(updatedUser) => {
+            setPendingFirstLoginUser(null);
+            setAuthSuccess(true);
+            if (typeof onLoginSuccess === 'function') {
+              onLoginSuccess(updatedUser);
+            }
+            setTimeout(() => {
+              navigate('/dashboard');
+            }, 400);
+          }}
+        />
+      )}
     </div>
   );
 }

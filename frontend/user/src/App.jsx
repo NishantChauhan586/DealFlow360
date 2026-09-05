@@ -10,6 +10,7 @@ import Approval      from './pages/Approval';
 import Fulfillment   from './pages/Fulfillment';
 import Subscriptions from './pages/Subscriptions';
 import AuthorityManagement from './pages/AuthorityManagement';
+import PermanentPasswordModal from './components/PermanentPasswordModal';
 import Portal        from './pages/Portal';
 import './index.css';
 
@@ -207,8 +208,19 @@ export default function App() {
     localStorage.removeItem('dealflow_user');
   };
 
+  const handlePermanentPasswordSaved = (updatedUser) => {
+    setCurrentUser(updatedUser);
+    localStorage.setItem('dealflow_user', JSON.stringify(updatedUser));
+  };
+
   return (
     <BrowserRouter>
+      {currentUser?.isFirstLogin && (
+        <PermanentPasswordModal
+          user={currentUser}
+          onPasswordSaved={handlePermanentPasswordSaved}
+        />
+      )}
       <Routes>
         <Route 
           path="/login" 
