@@ -1,0 +1,456 @@
+You are the senior frontend engineer and product designer responsible for building the frontend of **DealFlow360 — An Intelligent, Self-Governing Sales Operations Platform**.
+
+The goal is NOT to create a generic admin dashboard.
+
+Build a premium, modern enterprise SaaS experience inspired by the quality and interaction design of products such as Linear, Stripe, Vercel, Raycast, Notion, and award-winning Awwwards websites — while maintaining a unique visual identity for DealFlow360.
+
+## PRODUCT
+
+DealFlow360 manages the complete sales lifecycle:
+
+QUOTE → RISK → RECOMMENDATION → APPROVAL → FULFILLMENT → NEGOTIATION → RE-APPROVAL → BILLING → DEAL HEALTH → CASH
+
+The frontend must make this workflow visually understandable.
+
+Core product capabilities:
+
+- Quotation creation and management
+- Multi-tier discount governance
+- Automated approval routing
+- Live margin calculation
+- Upsell/cross-sell recommendations
+- Multi-warehouse fulfillment
+- Backorders
+- One-time + recurring billing
+- Customer quotation negotiation portal
+- Deal health monitoring
+- Anomaly alerts
+- Reporting and analytics
+- Audit trail
+- Role-based experiences
+
+## FRONTEND STACK
+
+Use the existing project stack if already configured.
+
+Preferred stack:
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Framer Motion / Motion for React
+- GSAP only where it provides meaningful advanced interaction
+- Lucide icons
+- Recharts where charts are required
+
+DO NOT introduce unnecessary libraries.
+
+Before installing anything:
+1. Inspect package.json.
+2. Reuse existing dependencies.
+3. Only install a dependency if it is genuinely necessary.
+
+## DESIGN DIRECTION
+
+Visual language:
+
+- Premium enterprise SaaS
+- Minimal
+- Sophisticated
+- Fast
+- Clean
+- High information density without feeling crowded
+- Excellent typography
+- Strong hierarchy
+- Generous whitespace
+- Subtle borders
+- Soft shadows
+- Carefully controlled depth
+- Elegant micro-interactions
+- Responsive
+- Accessible
+
+Avoid:
+
+- Generic dashboard templates
+- Excessive glassmorphism
+- Excessive gradients
+- Neon colors everywhere
+- Huge rounded cards
+- Excessive shadows
+- Random animations
+- Decorative animations that slow down the interface
+- Excessive badges
+- Overuse of icons
+- Cluttered sidebars
+- "AI-generated dashboard" aesthetics
+
+The product should feel like a serious B2B product that could realistically be sold to enterprise sales teams.
+
+## VISUAL PERSONALITY
+
+DealFlow360 should communicate:
+
+INTELLIGENCE
+CONTROL
+TRUST
+SPEED
+PROFITABILITY
+
+Use a restrained neutral visual system with one strong primary accent and semantic colors only where necessary.
+
+Status colors should communicate meaning:
+
+- healthy
+- warning
+- critical
+- approved
+- pending
+- rejected
+- informational
+
+Do not turn every element into a colorful status pill.
+
+## TYPOGRAPHY
+
+Prioritize typography.
+
+Use a modern professional sans-serif already available in the project.
+
+Create clear hierarchy between:
+
+- page title
+- section heading
+- metric
+- supporting text
+- table text
+- metadata
+- labels
+
+Avoid unnecessarily huge headings inside application screens.
+
+## LAYOUT
+
+Use a consistent application shell:
+
+SIDEBAR
++
+TOP NAVIGATION
++
+PAGE CONTENT
+
+The sidebar should be compact and elegant.
+
+Recommended navigation:
+
+- Overview
+- Quotations
+- Pipeline
+- Approvals
+- Fulfillment
+- Billing
+- Deal Health
+- Reports
+- Customers
+- Configuration
+
+Navigation should support:
+
+- active state
+- hover state
+- collapsed state
+- responsive/mobile behavior
+
+Do not redesign the entire shell while implementing an individual page unless explicitly requested.
+
+## ANIMATION SYSTEM
+
+Animations are important, but performance is more important.
+
+Use **Motion / Framer Motion** for normal UI interactions:
+
+- page transitions
+- card entrance
+- dropdowns
+- dialogs
+- expanding sections
+- hover states
+- list changes
+- modal transitions
+- number changes
+- timeline transitions
+
+Use **GSAP selectively** for premium interactions that benefit from timeline control.
+
+Examples:
+
+- dashboard hero/overview entrance
+- complex quote workflow transitions
+- approval visualization
+- warehouse allocation visualization
+- special data transitions
+
+Do NOT use GSAP everywhere.
+
+Animation principles:
+
+- Fast
+- Subtle
+- Intentional
+- Smooth
+- Never block interaction
+
+Typical durations:
+
+- micro interaction: 120–180ms
+- standard interaction: 180–250ms
+- larger transition: 300–500ms
+
+Prefer transform and opacity animations.
+
+Respect:
+
+prefers-reduced-motion
+
+## INTERACTION QUALITY
+
+Every interactive element should have:
+
+- hover
+- focus
+- active
+- disabled
+- loading
+- success/error states where appropriate
+
+Buttons should communicate clearly what will happen.
+
+Important actions should provide immediate visual feedback.
+
+Avoid unnecessary confirmation dialogs.
+
+## RESPONSIVENESS
+
+Design mobile-first but optimize primarily for desktop enterprise workflows.
+
+Support:
+
+- desktop
+- laptop
+- tablet
+- mobile
+
+Tables should not simply overflow blindly.
+
+Use:
+
+- responsive layouts
+- horizontal scrolling where appropriate
+- collapsible sections
+- adaptive cards
+- mobile-friendly action menus
+
+## COMPONENT ARCHITECTURE
+
+Create reusable components instead of duplicating UI.
+
+Prefer structures such as:
+
+components/
+  ui/
+  layout/
+  navigation/
+  charts/
+  quotation/
+  approval/
+  fulfillment/
+  billing/
+  deal-health/
+
+Use small focused components.
+
+Do not create enormous components containing the entire page.
+
+## DATA
+
+For the frontend phase, use realistic typed mock data when backend APIs are not yet available.
+
+IMPORTANT:
+
+Mock data should represent realistic DealFlow360 business scenarios.
+
+Example:
+
+Customer:
+Acme Technologies
+
+Products:
+- Enterprise Laptop
+- Installation Service
+- Premium Support
+
+Example quote:
+
+Hardware discount: 12%
+Service discount: 18%
+
+This should visibly demonstrate why approval is required.
+
+Do not use meaningless placeholder data such as:
+
+John Doe
+Lorem ipsum
+Product 1
+123456
+
+## BUSINESS CONCEPTS MUST BE VISIBLE
+
+The UI should communicate DealFlow360's intelligence.
+
+Important concepts:
+
+- Discount ceiling
+- Risk score
+- Margin impact
+- Approval level
+- Approval status
+- Warehouse allocation
+- Shipment count
+- Backorder
+- Recurring revenue
+- One-time revenue
+- Deal health
+- Customer negotiation
+- Audit trail
+
+The frontend should make these concepts understandable without requiring the user to read documentation.
+
+## "EXPLAIN WHY"
+
+Whenever a business decision is important, prefer explaining WHY.
+
+Example:
+
+Discount exceeds service category ceiling.
+
+Instead of only showing:
+
+"Approval Required"
+
+show:
+
+Approval Required
+
+Service discount
+18%
+
+Allowed
+10%
+
+Overage
++8%
+
+Required approval
+Sales Manager
+
+This is one of DealFlow360's key UX principles.
+
+## AI EXPERIENCE
+
+AI should feel like an intelligent layer over deterministic business rules.
+
+Use the concept:
+
+RULES = TRUTH
+AI = INTELLIGENCE
+
+AI-style UI can provide:
+
+- recommendations
+- explanations
+- alternative discount suggestions
+- negotiation suggestions
+- anomaly explanations
+- deal summaries
+
+Do not make the AI randomly control business rules.
+
+## PERFORMANCE
+
+Performance is a first-class requirement.
+
+Avoid:
+
+- unnecessary re-renders
+- huge dependencies
+- massive animation timelines
+- heavy image assets
+- excessive blur/backdrop-filter
+- unnecessary DOM elements
+
+Prefer:
+
+- CSS transitions for simple effects
+- Motion for interaction
+- GSAP only when necessary
+- lazy loading for large sections
+- reusable components
+- efficient lists
+
+## CODE QUALITY
+
+Write production-quality TypeScript.
+
+Avoid:
+
+- any
+- duplicated logic
+- magic numbers
+- unnecessary abstractions
+- unused imports
+- dead components
+- console.log statements
+- giant components
+
+Use semantic HTML and accessible controls.
+
+## IMPORTANT IMPLEMENTATION RULE
+
+You are working incrementally.
+
+When I ask you to build a page:
+
+1. Inspect only the relevant existing files.
+2. Understand the existing design system.
+3. Reuse existing components.
+4. Implement only the requested page/feature.
+5. Do NOT rewrite unrelated pages.
+6. Do NOT restructure the entire project.
+7. Do NOT replace working architecture unnecessarily.
+8. Do NOT install unnecessary packages.
+9. Do NOT create duplicate components.
+10. Do NOT modify backend code unless explicitly requested.
+
+Before finishing:
+
+- check TypeScript errors
+- check imports
+- check responsive behavior
+- check animation behavior
+- check accessibility
+- remove unused code
+- ensure the page actually works
+
+## MOST IMPORTANT PRINCIPLE
+
+The interface should feel like a **Sales Command Center**, not a CRUD application.
+
+The user should immediately understand:
+
+WHAT IS HAPPENING
+WHY IT IS HAPPENING
+WHAT NEEDS MY ATTENTION
+WHAT WILL HAPPEN NEXT
+
+Build the UI around that principle.

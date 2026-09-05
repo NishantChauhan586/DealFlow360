@@ -1,0 +1,395 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: var(--sidebar-width);
+  height: var(--topnav-height);
+  background-color: var(--color-bg-elevated);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 0 var(--space-6);
+  z-index: 40;
+  transition: left var(--transition-major);
+}
+
+.mobileToggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color var(--transition-micro), background-color var(--transition-micro);
+}
+
+.mobileToggle:hover {
+  color: var(--color-text);
+  background-color: var(--color-bg-overlay);
+}
+
+.titleArea {
+  flex: 1;
+  min-width: 0;
+}
+
+.pageTitle {
+  font-size: var(--text-base);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* ── Search ─────────────────────────────────────────────────── */
+.searchWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0 var(--space-3);
+  gap: var(--space-2);
+  height: 32px;
+  width: 220px;
+  transition:
+    border-color var(--transition-micro),
+    width var(--transition-standard),
+    box-shadow var(--transition-micro);
+}
+
+.searchWrap.searchFocused {
+  border-color: var(--color-accent-border);
+  box-shadow: 0 0 0 3px var(--color-accent-muted);
+  width: 280px;
+}
+
+.searchIcon {
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  outline: none;
+  min-width: 0;
+}
+
+.searchInput::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.searchInput::-webkit-search-cancel-button {
+  display: none;
+}
+
+.searchKbd {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--color-text-tertiary);
+  background-color: var(--color-bg-overlay);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  padding: 1px 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Quick Action ───────────────────────────────────────────── */
+.quickAction {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  height: 32px;
+  padding: 0 var(--space-3);
+  background-color: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-micro),
+    transform var(--transition-micro);
+  white-space: nowrap;
+}
+
+.quickAction:hover {
+  background-color: var(--color-accent-hover);
+}
+
+.quickAction:active {
+  transform: scale(0.97);
+}
+
+/* ── Icon Button ────────────────────────────────────────────── */
+.iconBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition:
+    color var(--transition-micro),
+    background-color var(--transition-micro);
+}
+
+.iconBtn:hover,
+.iconBtn.active {
+  color: var(--color-text);
+  background-color: var(--color-bg-overlay);
+}
+
+/* ── Notifications ──────────────────────────────────────────── */
+.notifWrap {
+  position: relative;
+}
+
+.notifBadge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--color-accent);
+  color: #fff;
+  font-size: 9px;
+  font-weight: var(--fw-bold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--color-bg-elevated);
+}
+
+.notifPanel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 320px;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  animation: fadeInUp 150ms ease;
+  overflow: hidden;
+}
+
+.notifHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.markRead {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-xs);
+  color: var(--color-accent-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-weight: var(--fw-medium);
+}
+
+.notifList {
+  list-style: none;
+}
+
+.notifItem {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+  cursor: pointer;
+  transition: background-color var(--transition-micro);
+}
+
+.notifItem:last-child {
+  border-bottom: none;
+}
+
+.notifItem:hover {
+  background-color: var(--color-bg-overlay);
+}
+
+.notifItem.unread {
+  background-color: var(--color-accent-muted);
+}
+
+.notifText {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  margin-bottom: 2px;
+}
+
+.notifTime {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+}
+
+/* ── Profile ────────────────────────────────────────────────── */
+.profileWrap {
+  position: relative;
+}
+
+.profileBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 34px;
+  padding: 0 var(--space-2);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition-micro);
+}
+
+.profileBtn:hover,
+.profileBtn.active {
+  background-color: var(--color-bg-overlay);
+}
+
+.profileAvatar {
+  width: 26px;
+  height: 26px;
+  background-color: var(--color-accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: var(--fw-bold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.03em;
+}
+
+.profileChevron {
+  color: var(--color-text-tertiary);
+  transition: transform var(--transition-micro);
+}
+
+.profileBtn.active .profileChevron {
+  transform: rotate(180deg);
+}
+
+.profileMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 220px;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  animation: fadeInUp 150ms ease;
+  overflow: hidden;
+  padding: var(--space-1);
+}
+
+.profileMenuHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+}
+
+.profileName {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+}
+
+.profileEmail {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+  margin-top: 1px;
+}
+
+.menuDivider {
+  border: none;
+  border-top: 1px solid var(--color-border-subtle);
+  margin: var(--space-1) 0;
+}
+
+.menuItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition:
+    color var(--transition-micro),
+    background-color var(--transition-micro);
+}
+
+.menuItem:hover {
+  color: var(--color-text);
+  background-color: var(--color-bg-overlay);
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .navbar {
+    left: 0;
+    padding: 0 var(--space-4);
+  }
+
+  .mobileToggle {
+    display: flex;
+  }
+
+  .searchWrap {
+    display: none;
+  }
+
+  .quickAction span {
+    display: none;
+  }
+
+  .quickAction {
+    width: 34px;
+    padding: 0;
+    justify-content: center;
+  }
+}

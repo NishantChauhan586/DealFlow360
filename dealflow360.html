@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DealFlow360 — Deal Operations</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+  :root{
+    --burnham: #00221C;
+    --burnham-700: #06342B;
+    --burnham-600: #0C4438;
+    --viridian: #438A7E;
+    --viridian-600: #367065;
+    --viridian-300: #86B3A9;
+    --viridian-100: #DCEAE6;
+    --paper: #F5F7F6;
+    --paper-2: #EAF0EE;
+    --ink: #08201A;
+    --ink-60: rgba(8,32,26,0.6);
+    --ink-40: rgba(8,32,26,0.4);
+    --amber: #C07A38;
+    --amber-100: #F3E3CE;
+    --rose: #B04A3D;
+    --rose-100: #F1DAD5;
+    --line: rgba(8,32,26,0.12);
+    --line-dark: rgba(220,234,230,0.14);
+    --white: #FFFFFF;
+    --radius: 4px;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+  #root{min-height:100vh;}
+  ::selection{background:var(--viridian-300); color:var(--burnham);}
+  button{font-family:inherit;}
+  .tnum{font-variant-numeric:tabular-nums;}
+
+  /* ---------- App shell ---------- */
+  .app{display:flex; min-height:100vh;}
+
+  .sidebar{
+    width:236px; flex-shrink:0;
+    background:var(--burnham);
+    color:var(--viridian-100);
+    display:flex; flex-direction:column;
+    position:sticky; top:0; height:100vh;
+  }
+  .sidebar-brand{
+    padding:26px 22px 20px;
+    border-bottom:1px solid var(--line-dark);
+  }
+  .sidebar-brand .mark{
+    font-family:var(--serif); font-weight:900; font-size:22px;
+    letter-spacing:-0.01em; color:var(--white); line-height:1;
+  }
+  .sidebar-brand .tag{
+    font-size:11px; color:var(--viridian-300); margin-top:6px;
+    letter-spacing:0.02em;
+  }
+  .nav{padding:14px 12px; display:flex; flex-direction:column; gap:2px; flex:1;}
+  .nav-item{
+    display:flex; align-items:center; gap:11px;
+    padding:10px 12px; border-radius:var(--radius);
+    color:rgba(220,234,230,0.72); background:transparent; border:none;
+    text-align:left; cursor:pointer; font-size:13.5px; font-weight:500;
+    transition:background .15s ease, color .15s ease;
+    width:100%;
+  }
+  .nav-item svg{width:16px; height:16px; flex-shrink:0; opacity:0.9;}
+  .nav-item:hover{background:rgba(255,255,255,0.06); color:var(--white);}
+  .nav-item.active{background:var(--viridian); color:var(--white);}
+  .nav-section-label{
+    font-size:10.5px; text-transform:uppercase; letter-spacing:0.08em;
+    color:rgba(220,234,230,0.38); padding:16px 12px 6px;
+  }
+  .sidebar-footer{
+    padding:16px 22px 20px; border-top:1px solid var(--line-dark);
+    font-size:12px; color:rgba(220,234,230,0.5);
+    display:flex; align-items:center; gap:10px;
+  }
+  .avatar{
+    width:28px; height:28px; border-radius:50%;
+    background:var(--viridian-300); color:var(--burnham);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:12px; flex-shrink:0;
+  }
+
+  .main{flex:1; min-width:0; display:flex; flex-direction:column;}
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 32px; border-bottom:1px solid var(--line);
+    background:var(--white);
+  }
+  .topbar h1{
+    font-family:var(--serif); font-weight:700; font-size:21px; margin:0;
+    letter-spacing:-0.01em;
+  }
+  .topbar .sub{font-size:12.5px; color:var(--ink-60); margin-top:3px;}
+  .topbar-actions{display:flex; gap:10px;}
+
+  .btn{
+    border-radius:var(--radius); border:1px solid var(--line);
+    background:var(--white); color:var(--ink);
+    font-size:13px; font-weight:600; padding:9px 15px;
+    cursor:pointer; display:inline-flex; align-items:center; gap:7px;
+  }
+  .btn-primary{background:var(--viridian); border-color:var(--viridian); color:var(--white);}
+  .btn-primary:hover{background:var(--viridian-600);}
+  .btn-dark{background:var(--burnham); border-color:var(--burnham); color:var(--white);}
+  .btn-ghost{background:transparent; border-color:transparent;}
+  .btn-ghost:hover{background:var(--paper-2);}
+  .btn-danger{background:var(--white); border-color:var(--rose); color:var(--rose);}
+  .btn:disabled{opacity:0.4; cursor:not-allowed;}
+
+  .content{padding:28px 32px 60px; flex:1;}
+
+  /* ---------- Hero (three.js) ---------- */
+  .hero{
+    position:relative; background:var(--burnham); border-radius:8px;
+    overflow:hidden; height:230px; margin-bottom:26px;
+    display:flex; align-items:center;
+  }
+  .hero canvas{position:absolute; inset:0; width:100%; height:100%;}
+  .hero-copy{position:relative; z-index:2; padding:0 40px; color:var(--white); max-width:520px;}
+  .hero-copy .eyebrow{font-size:12px; color:var(--viridian-300); font-weight:600; margin-bottom:8px;}
+  .hero-copy h2{font-family:var(--serif); font-weight:700; font-size:32px; line-height:1.08; margin:0 0 12px; letter-spacing:-0.01em;}
+  .hero-copy p{font-size:13.5px; color:rgba(220,234,230,0.75); margin:0; line-height:1.5;}
+  .hero-stat{
+    position:relative; z-index:2; margin-left:auto; padding-right:44px; text-align:right;
+    color:var(--white);
+  }
+  .hero-stat .num{font-family:var(--serif); font-weight:800; font-size:44px; line-height:1;}
+  .hero-stat .lbl{font-size:12px; color:rgba(220,234,230,0.65); margin-top:6px;}
+
+  /* ---------- Stat cards ---------- */
+  .grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px;}
+  .stat-card{
+    background:var(--white); border:1px solid var(--line); border-radius:6px;
+    padding:16px 18px;
+  }
+  .stat-card .lbl{font-size:12px; color:var(--ink-60); margin-bottom:8px;}
+  .stat-card .val{font-family:var(--serif); font-weight:700; font-size:26px;}
+  .stat-card .delta{font-size:11.5px; margin-top:6px; font-weight:600;}
+  .delta-up{color:var(--viridian-600);}
+  .delta-down{color:var(--rose);}
+
+  .panel{
+    background:var(--white); border:1px solid var(--line); border-radius:6px;
+    overflow:hidden;
+  }
+  .panel-header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:15px 18px; border-bottom:1px solid var(--line);
+  }
+  .panel-header h3{font-family:var(--serif); font-size:16px; font-weight:700; margin:0;}
+  .panel-body{padding:6px 0;}
+
+  .two-col{display:grid; grid-template-columns:1.3fr 1fr; gap:16px;}
+
+  .row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 18px; border-bottom:1px solid var(--line);
+    font-size:13px;
+  }
+  .row:last-child{border-bottom:none;}
+  .row-title{font-weight:600;}
+  .row-sub{color:var(--ink-60); font-size:12px; margin-top:2px;}
+  .tag{
+    font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:20px;
+    text-transform:uppercase; letter-spacing:0.03em;
+  }
+  .tag-amber{background:var(--amber-100); color:var(--amber);}
+  .tag-rose{background:var(--rose-100); color:var(--rose);}
+  .tag-green{background:var(--viridian-100); color:var(--viridian-600);}
+
+  /* ---------- Pipeline ---------- */
+  .kanban{display:grid; grid-template-columns:repeat(5,1fr); gap:14px; align-items:start;}
+  .kcol-head{
+    font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;
+    color:var(--ink-60); padding:0 4px 10px; display:flex; justify-content:space-between;
+  }
+  .kcard{
+    background:var(--white); border:1px solid var(--line); border-radius:6px;
+    padding:13px 14px; margin-bottom:10px; cursor:pointer;
+  }
+  .kcard:hover{border-color:var(--viridian-300);}
+  .kcard .cust{font-weight:700; font-size:13.5px; margin-bottom:4px;}
+  .kcard .amt{font-family:var(--serif); font-weight:700; font-size:17px; margin:6px 0 8px;}
+  .kcard .meta{font-size:11px; color:var(--ink-60); display:flex; justify-content:space-between;}
+
+  /* ---------- Quotation builder ---------- */
+  .builder{display:grid; grid-template-columns:280px 1fr 300px; gap:16px; align-items:start;}
+  .catalog-item{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:11px 14px; border-bottom:1px solid var(--line); font-size:13px;
+  }
+  .catalog-item .name{font-weight:600;}
+  .catalog-item .cat{font-size:11px; color:var(--ink-60);}
+  .add-btn{
+    width:26px; height:26px; border-radius:50%; border:1px solid var(--viridian);
+    color:var(--viridian); background:var(--white); font-size:16px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; line-height:1;
+  }
+  .add-btn:hover{background:var(--viridian); color:var(--white);}
+
+  table.cart{width:100%; border-collapse:collapse; font-size:13px;}
+  table.cart th{
+    text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:0.03em;
+    color:var(--ink-60); padding:10px 14px; border-bottom:1px solid var(--line); font-weight:600;
+  }
+  table.cart td{padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:middle;}
+  .qty-ctrl{display:flex; align-items:center; gap:8px;}
+  .qty-ctrl button{
+    width:22px; height:22px; border-radius:4px; border:1px solid var(--line);
+    background:var(--white); cursor:pointer; font-size:13px; line-height:1;
+  }
+  .disc-input{
+    width:52px; padding:5px 6px; border:1px solid var(--line); border-radius:4px;
+    font-size:12.5px; text-align:right;
+  }
+  .disc-input.over{border-color:var(--rose); color:var(--rose); background:var(--rose-100);}
+
+  .margin-box{padding:18px;}
+  .margin-num{font-family:var(--serif); font-weight:800; font-size:34px; color:var(--viridian-600);}
+  .margin-bar{height:6px; background:var(--paper-2); border-radius:4px; margin:10px 0 4px; overflow:hidden;}
+  .margin-bar .fill{height:100%; background:var(--viridian); border-radius:4px;}
+
+  .upsell-item{padding:13px 18px; border-bottom:1px solid var(--line);}
+  .upsell-item .name{font-weight:700; font-size:13px;}
+  .upsell-item .delta{font-size:12px; color:var(--viridian-600); font-weight:600; margin:3px 0 8px;}
+  .upsell-actions{display:flex; gap:8px;}
+  .upsell-actions button{font-size:11.5px; padding:5px 10px;}
+
+  /* ---------- Approval ---------- */
+  .risk-wrap{display:flex; gap:26px; align-items:center; padding:22px;}
+  .risk-meta{flex:1;}
+  .risk-meta h4{font-family:var(--serif); font-size:18px; margin:0 0 6px;}
+  .risk-meta p{font-size:13px; color:var(--ink-60); margin:0; line-height:1.5;}
+  .steps{padding:4px 18px 18px;}
+  .step{display:flex; gap:12px; padding:14px 0; border-bottom:1px solid var(--line);}
+  .step:last-child{border-bottom:none;}
+  .step-dot{
+    width:26px; height:26px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;
+    color:var(--white); background:var(--ink-40);
+  }
+  .step-dot.done{background:var(--viridian);}
+  .step-dot.pending{background:var(--amber);}
+  .step-title{font-weight:700; font-size:13.5px;}
+  .step-sub{font-size:12px; color:var(--ink-60); margin-top:2px;}
+
+  /* ---------- Fulfillment ---------- */
+  .wh-row{display:flex; align-items:center; gap:16px; padding:14px 18px; border-bottom:1px solid var(--line);}
+  .wh-row:last-child{border-bottom:none;}
+  .wh-name{font-weight:700; font-size:13.5px; width:150px;}
+  .wh-bar-track{flex:1; height:10px; background:var(--paper-2); border-radius:6px; overflow:hidden;}
+  .wh-bar-fill{height:100%; background:var(--viridian);}
+  .wh-qty{width:90px; text-align:right; font-size:13px; font-weight:600;}
+
+  .backorder-banner{
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--amber-100); border:1px solid var(--amber); color:#7A4E22;
+    border-radius:6px; padding:13px 18px; margin-top:14px; font-size:13px;
+  }
+
+  /* ---------- Subscriptions ---------- */
+  .bill-line{display:flex; justify-content:space-between; padding:12px 18px; border-bottom:1px solid var(--line); font-size:13px;}
+  .timeline{display:flex; gap:10px; padding:18px; overflow-x:auto;}
+  .tl-item{
+    min-width:110px; border:1px solid var(--line); border-radius:6px; padding:12px;
+    text-align:center; flex-shrink:0;
+  }
+  .tl-item .date{font-size:11px; color:var(--ink-60);}
+  .tl-item .amt{font-family:var(--serif); font-weight:700; font-size:16px; margin-top:6px;}
+
+  /* ---------- Portal ---------- */
+  .portal-wrap{max-width:760px; margin:0 auto;}
+  .portal-badge{
+    display:inline-flex; align-items:center; gap:7px; font-size:11.5px; font-weight:700;
+    color:var(--viridian-600); background:var(--viridian-100); padding:5px 12px;
+    border-radius:20px; margin-bottom:14px;
+  }
+  .portal-card{background:var(--white); border:1px solid var(--line); border-radius:8px; padding:26px;}
+  .portal-total{font-family:var(--serif); font-weight:800; font-size:38px; margin:6px 0 2px;}
+  .comment-box{
+    width:100%; border:1px solid var(--line); border-radius:6px; padding:12px;
+    font-family:inherit; font-size:13px; resize:vertical; min-height:70px; margin-top:6px;
+  }
+  .field-label{font-size:12px; font-weight:700; color:var(--ink-60); margin-bottom:6px; margin-top:18px;}
+
+  .fade-target{opacity:0;}
+
+  @media (max-width: 1080px){
+    .builder{grid-template-columns:1fr;}
+    .kanban{grid-template-columns:repeat(2,1fr);}
+    .two-col{grid-template-columns:1fr;}
+    .grid-4{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef, useMemo } = React;
+
+/* ===================== ICONS ===================== */
+const Icon = ({ d, ...p }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}>
+    {d}
+  </svg>
+);
+const IconDash = (p) => <Icon {...p} d={<><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></>} />;
+const IconPipe = (p) => <Icon {...p} d={<><path d="M4 4h4v16H4z"/><path d="M10 4h4v10h-4z"/><path d="M16 4h4v6h-4z"/></>} />;
+const IconCart = (p) => <Icon {...p} d={<><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2 3h2l2.4 12.2a2 2 0 0 0 2 1.8h8.4a2 2 0 0 0 2-1.6L21 7H6"/></>} />;
+const IconCheck = (p) => <Icon {...p} d={<><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></>} />;
+const IconTruck = (p) => <Icon {...p} d={<><rect x="1" y="6" width="14" height="11"/><path d="M15 10h4l3 3v4h-7z"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></>} />;
+const IconRefresh = (p) => <Icon {...p} d={<><path d="M4 4v6h6"/><path d="M20 20v-6h-6"/><path d="M20 10a8 8 0 0 0-14.9-3.5M4 14a8 8 0 0 0 14.9 3.5"/></>} />;
+const IconUsers = (p) => <Icon {...p} d={<><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17.5" cy="9" r="2.6"/><path d="M15.5 13.2a5.5 5.5 0 0 1 5.9 5.5"/></>} />;
+
+/* ===================== MOCK DATA ===================== */
+const catalog = [
+  { id:'p1', name:'Orion Laptop 14"', cat:'Hardware', price:1450, cost:1015, ceiling:15 },
+  { id:'p2', name:'Onsite Setup Service', cat:'Services', price:600, cost:480, ceiling:10 },
+  { id:'p3', name:'Extended Care Plan', cat:'Services', price:220, cost:150, ceiling:10 },
+  { id:'p4', name:'Docking Station', cat:'Hardware', price:180, cost:110, ceiling:15 },
+  { id:'p5', name:'Fleet Manager (Sub)', cat:'Subscription', price:39, cost:12, ceiling:12 },
+  { id:'p6', name:'Security Suite (Sub)', cat:'Subscription', price:24, cost:8, ceiling:12 },
+];
+
+const upsells = [
+  { id:'u1', name:'Extended Care Plan', delta:'+$70 margin', tag:'Promoted' },
+  { id:'u2', name:'Docking Station ×2', delta:'+$140 margin', tag:null },
+];
+
+const stalledDeals = [
+  { cust:'Marlowe & Finch', amt:'$48,200', days:9, rep:'S. Adeyemi' },
+  { cust:'Halcyon Textiles', amt:'$21,900', days:14, rep:'R. Okafor' },
+  { cust:'Bramwell Group', amt:'$63,000', days:6, rep:'J. Vance' },
+];
+
+const anomalies = [
+  { cust:'Acme Corp', note:'18% given on Services, 10% allowed', level:'High' },
+  { cust:'Northwind Retail', note:'Blended overage across 4 lines', level:'Medium' },
+  { cust:'Sable & Co', note:'Discount 3× rep\u2019s 90-day average', level:'High' },
+];
+
+const pipelineData = {
+  Draft: [ { cust:'Widget Holdings', amt:'$12,400', rep:'S. Adeyemi' }, { cust:'Faircourt Ltd', amt:'$8,050', rep:'J. Vance' } ],
+  'Pending Approval': [ { cust:'Acme Corp', amt:'$34,900', rep:'S. Adeyemi' }, { cust:'Northwind Retail', amt:'$19,200', rep:'R. Okafor' } ],
+  Approved: [ { cust:'Bramwell Group', amt:'$63,000', rep:'J. Vance' } ],
+  Fulfillment: [ { cust:'Delacroix Labs', amt:'$27,300', rep:'R. Okafor' } ],
+  Billed: [ { cust:'Sable & Co', amt:'$15,600', rep:'S. Adeyemi' } ],
+};
+
+/* ===================== THREE.JS HERO ===================== */
+function HeroCanvas(){
+  const mount = useRef(null);
+  useEffect(() => {
+    const el = mount.current;
+    const width = el.clientWidth, height = el.clientHeight;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, width/height, 0.1, 100);
+    camera.position.z = 9;
+    const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    el.appendChild(renderer.domElement);
+
+    const COUNT = 260;
+    const geo = new THREE.BufferGeometry();
+    const positions = new Float32Array(COUNT * 3);
+    const speeds = new Float32Array(COUNT);
+    for(let i=0;i<COUNT;i++){
+      positions[i*3] = (Math.random()-0.5)*16;
+      positions[i*3+1] = (Math.random()-0.5)*7;
+      positions[i*3+2] = (Math.random()-0.5)*6;
+      speeds[i] = 0.15 + Math.random()*0.35;
+    }
+    geo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+    const mat = new THREE.PointsMaterial({ color:0x86B3A9, size:0.055, transparent:true, opacity:0.85 });
+    const points = new THREE.Points(geo, mat);
+    scene.add(points);
+
+    // faint connecting lines to suggest "flow"
+    const lineGeo = new THREE.BufferGeometry();
+    const lineMat = new THREE.LineBasicMaterial({ color:0x438A7E, transparent:true, opacity:0.18 });
+    const lineCount = 60;
+    const linePos = new Float32Array(lineCount * 2 * 3);
+    lineGeo.setAttribute('position', new THREE.BufferAttribute(linePos,3));
+    const lines = new THREE.LineSegments(lineGeo, lineMat);
+    scene.add(lines);
+
+    let raf;
+    const clock = new THREE.Clock();
+    const animate = () => {
+      const t = clock.getElapsedTime();
+      const pos = geo.attributes.position.array;
+      for(let i=0;i<COUNT;i++){
+        pos[i*3] += speeds[i]*0.015;
+        if(pos[i*3] > 8) pos[i*3] = -8;
+        pos[i*3+1] += Math.sin(t*0.6 + i)*0.0009;
+      }
+      geo.attributes.position.needsUpdate = true;
+
+      const lp = lineGeo.attributes.position.array;
+      for(let i=0;i<lineCount;i++){
+        const a = i, b = (i*7+3) % COUNT;
+        lp[i*6] = pos[a*3]; lp[i*6+1] = pos[a*3+1]; lp[i*6+2] = pos[a*3+2];
+        lp[i*6+3] = pos[b*3]; lp[i*6+4] = pos[b*3+1]; lp[i*6+5] = pos[b*3+2];
+      }
+      lineGeo.attributes.position.needsUpdate = true;
+
+      points.rotation.y = t*0.02;
+      lines.rotation.y = t*0.02;
+      renderer.render(scene, camera);
+      raf = requestAnimationFrame(animate);
+    };
+    animate();
+
+    const onResize = () => {
+      const w = el.clientWidth, h = el.clientHeight;
+      camera.aspect = w/h; camera.updateProjectionMatrix();
+      renderer.setSize(w,h);
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', onResize);
+      renderer.dispose();
+      el.removeChild(renderer.domElement);
+    };
+  }, []);
+  return <div ref={mount} style={{position:'absolute', inset:0}} />;
+}
+
+/* ===================== ANIM HELPERS ===================== */
+function useEnter(deps){
+  const ref = useRef(null);
+  useEffect(() => {
+    if(!ref.current) return;
+    const targets = ref.current.querySelectorAll('.fade-target');
+    gsap.fromTo(targets, { opacity:0, y:14 }, { opacity:1, y:0, duration:0.55, ease:'power2.out', stagger:0.06 });
+  }, deps);
+  return ref;
+}
+function CountUp({ value, prefix='', decimals=0 }){
+  const ref = useRef(null);
+  useEffect(() => {
+    const obj = { v: 0 };
+    gsap.to(obj, {
+      v: value, duration: 0.9, ease:'power2.out',
+      onUpdate: () => { if(ref.current) ref.current.textContent = prefix + obj.v.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+    });
+  }, [value]);
+  return <span ref={ref} className="tnum">{prefix}0</span>;
+}
+
+/* ===================== NAV ===================== */
+const NAV_ITEMS = [
+  { id:'dashboard', label:'Deal Health', icon:IconDash },
+  { id:'pipeline', label:'Pipeline', icon:IconPipe },
+  { id:'builder', label:'Quotation Builder', icon:IconCart },
+  { id:'approval', label:'Approvals', icon:IconCheck },
+  { id:'fulfillment', label:'Fulfillment', icon:IconTruck },
+  { id:'subscriptions', label:'Subscriptions', icon:IconRefresh },
+  { id:'portal', label:'Customer Portal', icon:IconUsers },
+];
+
+function Sidebar({ screen, setScreen }){
+  return (
+    <aside className="sidebar">
+      <div className="sidebar-brand">
+        <div className="mark">DealFlow360</div>
+        <div className="tag">Self-governing sales ops</div>
+      </div>
+      <div className="nav-section-label">Workspace</div>
+      <nav className="nav">
+        {NAV_ITEMS.map(item => (
+          <button key={item.id} className={"nav-item" + (screen===item.id ? " active":"")} onClick={() => setScreen(item.id)}>
+            <item.icon />
+            {item.label}
+          </button>
+        ))}
+      </nav>
+      <div className="sidebar-footer">
+        <div className="avatar">SA</div>
+        <div>
+          <div style={{color:'#fff', fontWeight:600}}>Sade Adeyemi</div>
+          <div>Sales Rep · East Region</div>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+/* ===================== DASHBOARD ===================== */
+function Dashboard(){
+  const ref = useEnter([]);
+  return (
+    <div ref={ref}>
+      <div className="hero">
+        <HeroCanvas />
+        <div className="hero-copy fade-target">
+          <div className="eyebrow">Deal Health · Live</div>
+          <h2>Every deal, watched<br/>before it stalls.</h2>
+          <p>Anomalies, stalled quotes, and delivery slippage surface the moment they happen — not after the deal has gone cold.</p>
+        </div>
+        <div className="hero-stat fade-target">
+          <div className="num"><CountUp value={214300} prefix="$" /></div>
+          <div className="lbl">Open pipeline value</div>
+        </div>
+      </div>
+
+      <div className="grid-4">
+        <div className="stat-card fade-target">
+          <div className="lbl">Open pipeline</div>
+          <div className="val"><CountUp value={214300} prefix="$" /></div>
+          <div className="delta delta-up">↑ 6.2% vs last week</div>
+        </div>
+        <div className="stat-card fade-target">
+          <div className="lbl">Stalled deals</div>
+          <div className="val"><CountUp value={3} /></div>
+          <div className="delta delta-down">2 over 10 days idle</div>
+        </div>
+        <div className="stat-card fade-target">
+          <div className="lbl">Discount anomalies</div>
+          <div className="val"><CountUp value={3} /></div>
+          <div className="delta delta-down">2 flagged high risk</div>
+        </div>
+        <div className="stat-card fade-target">
+          <div className="lbl">Avg. approval time</div>
+          <div className="val"><CountUp value={5.4} decimals={1} /><span style={{fontSize:15}}> hrs</span></div>
+          <div className="delta delta-up">↓ 1.1 hrs vs last month</div>
+        </div>
+      </div>
+
+      <div className="two-col">
+        <div className="panel fade-target">
+          <div className="panel-header"><h3>Stalled deals</h3><span className="tag tag-amber">3 active</span></div>
+          <div className="panel-body">
+            {stalledDeals.map((d,i) => (
+              <div className="row" key={i}>
+                <div>
+                  <div className="row-title">{d.cust}</div>
+                  <div className="row-sub">{d.rep} · idle {d.days} days</div>
+                </div>
+                <div style={{textAlign:'right'}}>
+                  <div className="row-title">{d.amt}</div>
+                  <button className="btn btn-ghost" style={{padding:'4px 8px', fontSize:11.5}}>Nudge rep →</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="panel fade-target">
+          <div className="panel-header"><h3>Discount anomalies</h3><span className="tag tag-rose">2 high</span></div>
+          <div className="panel-body">
+            {anomalies.map((a,i) => (
+              <div className="row" key={i}>
+                <div>
+                  <div className="row-title">{a.cust}</div>
+                  <div className="row-sub">{a.note}</div>
+                </div>
+                <span className={"tag " + (a.level==='High' ? 'tag-rose':'tag-amber')}>{a.level}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ===================== PIPELINE ===================== */
+function Pipeline(){
+  const ref = useEnter([]);
+  return (
+    <div ref={ref} className="kanban">
+      {Object.entries(pipelineData).map(([stage, deals]) => (
+        <div key={stage} className="fade-target">
+          <div className="kcol-head"><span>{stage}</span><span>{deals.length}</span></div>
+          {deals.map((d,i) => (
+            <div className="kcard" key={i}>
+              <div className="cust">{d.cust}</div>
+              <div className="amt">{d.amt}</div>
+              <div className="meta"><span>{d.rep}</span><span>Q-{1000+i}</span></div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ===================== QUOTATION BUILDER ===================== */
+function Builder(){
+  const ref = useEnter([]);
+  const [lines, setLines] = useState([
+    { id:'p1', qty:1, discount:12 },
+    { id:'p2', qty:1, discount:18 },
+  ]);
+
+  const addProduct = (id) => {
+    setLines(prev => {
+      const existing = prev.find(l => l.id===id);
+      if(existing) return prev.map(l => l.id===id ? {...l, qty:l.qty+1} : l);
+      return [...prev, { id, qty:1, discount:0 }];
+    });
+  };
+  const updateQty = (id, d) => setLines(prev => prev.map(l => l.id===id ? {...l, qty:Math.max(1,l.qty+d)} : l));
+  const updateDiscount = (id, val) => setLines(prev => prev.map(l => l.id===id ? {...l, discount:Math.max(0, val)} : l));
+
+  const enriched = lines.map(l => ({ ...l, product: catalog.find(p => p.id===l.id) }));
+  const subtotal = enriched.reduce((s,l) => s + l.product.price*l.qty, 0);
+  const discountTotal = enriched.reduce((s,l) => s + l.product.price*l.qty*(l.discount/100), 0);
+  const total = subtotal - discountTotal;
+  const cost = enriched.reduce((s,l) => s + l.product.cost*l.qty, 0);
+  const marginPct = total > 0 ? Math.max(0, ((total-cost)/total)*100) : 0;
+
+  return (
+    <div ref={ref} className="builder">
+      <div className="panel fade-target">
+        <div className="panel-header"><h3>Catalog</h3></div>
+        <div className="panel-body">
+          {catalog.map(p => (
+            <div className="catalog-item" key={p.id}>
+              <div>
+                <div className="name">{p.name}</div>
+                <div className="cat">{p.cat} · ${p.price}</div>
+              </div>
+              <button className="add-btn" onClick={() => addProduct(p.id)}>+</button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="panel fade-target">
+        <div className="panel-header"><h3>Quotation — Acme Corp</h3><span className="tag tag-green">Gold tier</span></div>
+        <table className="cart">
+          <thead>
+            <tr><th>Line</th><th>Qty</th><th>Discount</th><th style={{textAlign:'right'}}>Total</th></tr>
+          </thead>
+          <tbody>
+            {enriched.map(l => {
+              const over = l.discount > l.product.ceiling;
+              return (
+                <tr key={l.id}>
+                  <td>
+                    <div style={{fontWeight:600}}>{l.product.name}</div>
+                    <div style={{fontSize:11, color:'var(--ink-60)'}}>{l.product.cat} · ceiling {l.product.ceiling}%</div>
+                  </td>
+                  <td>
+                    <div className="qty-ctrl">
+                      <button onClick={() => updateQty(l.id,-1)}>−</button>
+                      <span className="tnum">{l.qty}</span>
+                      <button onClick={() => updateQty(l.id,1)}>+</button>
+                    </div>
+                  </td>
+                  <td>
+                    <input className={"disc-input" + (over ? " over":"")} type="number" value={l.discount}
+                      onChange={e => updateDiscount(l.id, Number(e.target.value))} />%
+                    {over && <div style={{fontSize:10.5, color:'var(--rose)', marginTop:3}}>+{(l.discount-l.product.ceiling)} pts over</div>}
+                  </td>
+                  <td style={{textAlign:'right', fontWeight:600}} className="tnum">
+                    ${Math.round(l.product.price*l.qty*(1-l.discount/100)).toLocaleString()}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <div className="row" style={{borderTop:'1px solid var(--line)'}}>
+          <span className="row-sub">Subtotal ${subtotal.toLocaleString()} · Discount −${Math.round(discountTotal).toLocaleString()}</span>
+          <span style={{fontFamily:'var(--serif)', fontWeight:700, fontSize:19}} className="tnum">${Math.round(total).toLocaleString()}</span>
+        </div>
+      </div>
+
+      <div style={{display:'flex', flexDirection:'column', gap:16}}>
+        <div className="panel fade-target">
+          <div className="panel-header"><h3>Live margin</h3></div>
+          <div className="margin-box">
+            <div className="margin-num"><CountUp value={marginPct} decimals={1} />%</div>
+            <div className="margin-bar"><div className="fill" style={{width: Math.min(100,marginPct)+'%'}}></div></div>
+            <div style={{fontSize:11.5, color:'var(--ink-60)'}}>Updates instantly as lines and discounts change</div>
+          </div>
+        </div>
+        <div className="panel fade-target">
+          <div className="panel-header"><h3>Upsell suggestions</h3></div>
+          <div className="panel-body">
+            {upsells.map(u => (
+              <div className="upsell-item" key={u.id}>
+                <div className="name">{u.name} {u.tag && <span className="tag tag-green" style={{marginLeft:6}}>{u.tag}</span>}</div>
+                <div className="delta">{u.delta}</div>
+                <div className="upsell-actions">
+                  <button className="btn btn-primary" onClick={() => addProduct(u.id==='u1' ? 'p3':'p4')}>Add to quote</button>
+                  <button className="btn btn-ghost">Dismiss</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <button className="btn btn-dark" style={{justifyContent:'center'}}>Send for approval →</button>
+      </div>
+    </div>
+  );
+}
+
+/* ===================== APPROVAL ===================== */
+function Approval(){
+  const ref = useEnter([]);
+  const arcRef = useRef(null);
+  const score = 68;
+  useEffect(() => {
+    if(!arcRef.current) return;
+    const len = 220;
+    gsap.fromTo(arcRef.current, { strokeDashoffset: len }, { strokeDashoffset: len - (len*score/100), duration: 1, ease:'power2.out', delay:0.2 });
+  }, []);
+  return (
+    <div ref={ref} className="two-col">
+      <div className="panel fade-target">
+        <div className="panel-header"><h3>Blended risk score — Acme Corp</h3><span className="tag tag-rose">Needs Finance</span></div>
+        <div className="risk-wrap">
+          <svg width="130" height="130" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="35" fill="none" stroke="var(--paper-2)" strokeWidth="10"/>
+            <circle ref={arcRef} cx="50" cy="50" r="35" fill="none" stroke="var(--amber)" strokeWidth="10"
+              strokeDasharray="220" strokeDashoffset="220" strokeLinecap="round" transform="rotate(-90 50 50)"/>
+            <text x="50" y="55" textAnchor="middle" fontFamily="Fraunces" fontWeight="700" fontSize="22" fill="var(--ink)">{score}</text>
+          </svg>
+          <div className="risk-meta">
+            <h4>Service line broke its own ceiling</h4>
+            <p>Laptop discount (12%) is within its 15% ceiling. Onsite Setup Service was discounted 18%, 8 points over its 10% ceiling. The blended score routes this quote to Sales Manager, then Finance.</p>
+          </div>
+        </div>
+      </div>
+      <div className="panel fade-target">
+        <div className="panel-header"><h3>Approval chain</h3></div>
+        <div className="steps">
+          <div className="step">
+            <div className="step-dot done"><IconCheck style={{width:13,height:13}}/></div>
+            <div>
+              <div className="step-title">Sales Manager — R. Okafor</div>
+              <div className="step-sub">Approved · "Margin still healthy overall, proceed." · 2:14pm</div>
+            </div>
+          </div>
+          <div className="step">
+            <div className="step-dot pending">2</div>
+            <div>
+              <div className="step-title">Finance — awaiting review</div>
+              <div className="step-sub">Required because Services exceeded its category ceiling</div>
+            </div>
+          </div>
+        </div>
+        <div style={{display:'flex', gap:10, padding:'0 18px 18px'}}>
+          <button className="btn btn-primary">Approve</button>
+          <button className="btn btn-danger">Reject</button>
+          <button className="btn btn-ghost">Return for revision</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ===================== FULFILLMENT ===================== */
+function Fulfillment(){
+  const ref = useEnter([]);
+  const warehouses = [
+    { name:'Main Warehouse', qty:14, of:18, pct:78 },
+    { name:'East Depot', qty:4, of:18, pct:22 },
+  ];
+  return (
+    <div ref={ref}>
+      <div className="panel fade-target" style={{marginBottom:16}}>
+        <div className="panel-header"><h3>Suggested warehouse split — Order #4821</h3><span className="tag tag-green">2 shipments</span></div>
+        <div className="panel-body">
+          {warehouses.map((w,i) => (
+            <div className="wh-row" key={i}>
+              <div className="wh-name">{w.name}</div>
+              <div className="wh-bar-track"><div className="wh-bar-fill" style={{width:w.pct+'%'}}></div></div>
+              <div className="wh-qty tnum">{w.qty} / {w.of} units</div>
+            </div>
+          ))}
+        </div>
+        <div style={{display:'flex', gap:10, padding:'14px 18px'}}>
+          <button className="btn btn-primary">Accept suggested split</button>
+          <button className="btn btn-ghost">Manual override</button>
+        </div>
+        <div style={{padding:'0 18px 18px'}}>
+          <div className="backorder-banner fade-target">
+            <span>Stock for the remaining 4 units lands at East Depot on Sept 12 — consolidate into one shipment?</span>
+            <button className="btn btn-dark" style={{padding:'6px 12px', fontSize:12}}>Consolidate backorder</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ===================== SUBSCRIPTIONS ===================== */
+function Subscriptions(){
+  const ref = useEnter([]);
+  return (
+    <div ref={ref} className="two-col">
+      <div className="panel fade-target">
+        <div className="panel-header"><h3>Order lines — Acme Corp</h3></div>
+        <div className="panel-body">
+          <div style={{padding:'10px 18px 4px', fontSize:11, textTransform:'uppercase', letterSpacing:'0.04em', color:'var(--ink-60)', fontWeight:700}}>One-time</div>
+          <div className="bill-line"><span>Orion Laptop 14" ×1</span><span className="tnum">$1,450.00</span></div>
+          <div style={{padding:'14px 18px 4px', fontSize:11, textTransform:'uppercase', letterSpacing:'0.04em', color:'var(--ink-60)', fontWeight:700}}>Recurring</div>
+          <div className="bill-line"><span>Fleet Manager (Sub) — monthly</span><span className="tnum">$39.00 / mo</span></div>
+          <div className="bill-line"><span>Security Suite (Sub) — monthly</span><span className="tnum">$24.00 / mo</span></div>
+        </div>
+        <div style={{padding:'14px 18px', borderTop:'1px solid var(--line)', fontSize:12.5, color:'var(--ink-60)'}}>
+          Mid-cycle quantity change on Fleet Manager will be prorated to the next billing date automatically.
+        </div>
+      </div>
+      <div className="panel fade-target">
+        <div className="panel-header"><h3>Upcoming billing schedule</h3></div>
+        <div className="timeline">
+          <div className="tl-item"><div className="date">Sep 20</div><div className="amt tnum">$63.00</div></div>
+          <div className="tl-item"><div className="date">Oct 20</div><div className="amt tnum">$63.00</div></div>
+          <div className="tl-item"><div className="date">Nov 20</div><div className="amt tnum">$63.00</div></div>
+          <div className="tl-item"><div className="date">Dec 20</div><div className="amt tnum">$63.00</div></div>
+        </div>
+        <div style={{display:'flex', gap:10, padding:'0 18px 18px'}}>
+          <button className="btn btn-ghost">Modify subscription</button>
+          <button className="btn btn-danger">Cancel line</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ===================== CUSTOMER PORTAL ===================== */
+function Portal(){
+  const ref = useEnter([]);
+  const [note, setNote] = useState('');
+  return (
+    <div ref={ref} className="portal-wrap">
+      <div className="fade-target portal-badge">Restricted customer view · Quotation Q-1042</div>
+      <div className="portal-card fade-target">
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start'}}>
+          <div>
+            <div style={{fontSize:12, color:'var(--ink-60)'}}>Prepared for</div>
+            <h3 style={{fontFamily:'var(--serif)', margin:'2px 0 0', fontSize:19}}>Acme Corp</h3>
+          </div>
+          <span className="tag tag-amber">Under negotiation</span>
+        </div>
+        <div className="portal-total tnum">$1,940.00</div>
+        <div style={{fontSize:12.5, color:'var(--ink-60)', marginBottom:14}}>2 lines · valid through Sept 20</div>
+
+        <div style={{borderTop:'1px solid var(--line)', paddingTop:14}}>
+          <div className="bill-line" style={{padding:'8px 0'}}><span>Orion Laptop 14" ×1</span><span className="tnum">$1,276.00</span></div>
+          <div className="bill-line" style={{padding:'8px 0', borderBottom:'none'}}><span>Onsite Setup Service ×1</span><span className="tnum">$492.00</span></div>
+        </div>
+
+        <div className="field-label">Ask a question or request a change on a line</div>
+        <textarea className="comment-box" placeholder="e.g. Could the setup service be scheduled for next month?" value={note} onChange={e=>setNote(e.target.value)}></textarea>
+
+        <div className="field-label">Counter a discount</div>
+        <div style={{display:'flex', gap:10}}>
+          <input className="disc-input" style={{width:80}} placeholder="e.g. 20" />
+          <span style={{alignSelf:'center', fontSize:12.5, color:'var(--ink-60)'}}>% off the total</span>
+        </div>
+
+        <div style={{display:'flex', gap:10, marginTop:22}}>
+          <button className="btn btn-primary">Submit request</button>
+          <button className="btn btn-dark">Confirm quotation</button>
+        </div>
+        <div style={{fontSize:11.5, color:'var(--ink-60)', marginTop:10}}>
+          Confirming with terms beyond approved thresholds automatically re-opens Sales Manager and Finance review.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ===================== APP ===================== */
+const SCREENS = {
+  dashboard: { title:'Deal Health', sub:'Real-time view across every open quotation', node: Dashboard },
+  pipeline: { title:'Pipeline', sub:'Quotations by stage, from draft to billed', node: Pipeline },
+  builder: { title:'Quotation Builder', sub:'Build, discount, and route a quote in one pass', node: Builder },
+  approval: { title:'Discount Approval', sub:'Blended risk scoring and the approval chain', node: Approval },
+  fulfillment: { title:'Fulfillment & Warehouse Split', sub:'Live stock-aware shipment planning', node: Fulfillment },
+  subscriptions: { title:'Subscriptions & Billing', sub:'One-time and recurring lines, reconciled', node: Subscriptions },
+  portal: { title:'Customer Portal', sub:'What Acme Corp sees when they open the link', node: Portal },
+};
+
+function App(){
+  const [screen, setScreen] = useState('dashboard');
+  const Screen = SCREENS[screen].node;
+  return (
+    <div className="app">
+      <Sidebar screen={screen} setScreen={setScreen} />
+      <div className="main">
+        <div className="topbar">
+          <div>
+            <h1>{SCREENS[screen].title}</h1>
+            <div className="sub">{SCREENS[screen].sub}</div>
+          </div>
+          <div className="topbar-actions">
+            <button className="btn btn-ghost">Reload data</button>
+            <button className="btn btn-dark">Go to backend</button>
+          </div>
+        </div>
+        <div className="content">
+          <Screen key={screen} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
