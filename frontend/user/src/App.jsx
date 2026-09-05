@@ -9,6 +9,7 @@ import Builder       from './pages/Builder';
 import Approval      from './pages/Approval';
 import Fulfillment   from './pages/Fulfillment';
 import Subscriptions from './pages/Subscriptions';
+import AuthorityManagement from './pages/AuthorityManagement';
 import Portal        from './pages/Portal';
 import './index.css';
 
@@ -23,6 +24,7 @@ const ROUTE_MAP = {
   '/approval':      'approval',
   '/fulfillment':   'fulfillment',
   '/subscriptions': 'subscriptions',
+  '/authorities':   'authorities',
   '/portal':        'portal',
 };
 
@@ -158,6 +160,14 @@ function AppShell({ user, onLogout }) {
               element={
                 <ProtectedRoute user={user} allowedRoles={['admin']}>
                   <Subscriptions />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/authorities" 
+              element={
+                <ProtectedRoute user={user} allowedRoles={['admin']}>
+                  <AuthorityManagement />
                 </ProtectedRoute>
               } 
             />

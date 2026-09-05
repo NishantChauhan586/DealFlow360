@@ -44,5 +44,6 @@ export const SCREENS = {
   approval:      { title:'Discount Approval',            sub:'Blended risk scoring and the approval chain' },
   fulfillment:   { title:'Fulfillment & Warehouse Split',sub:'Live stock-aware shipment planning' },
   subscriptions: { title:'Subscriptions & Billing',      sub:'One-time and recurring lines, reconciled' },
+  authorities:   { title:'Authority Management',          sub:'Internal role provisioning, credentials & approver hierarchy' },
   portal:        { title:'Customer Portal',              sub:'Self-service quotation management and submission' },
 };
