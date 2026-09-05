@@ -33,7 +33,9 @@ class Settings(BaseSettings):
         "http://localhost:3000",
     ]
 
-    # Database Configuration (PostgreSQL with asyncpg)
+    # Database Configuration (Local SQLite or PostgreSQL)
+    USE_LOCAL_SQLITE: bool = True
+    SQLITE_DB_PATH: str = "./dealflow360.db"
     POSTGRES_SERVER: str = "localhost"
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str = "postgres"
@@ -75,9 +77,16 @@ class Settings(BaseSettings):
     @field_validator("POSTGRES_DSN", mode="before")
     @classmethod
     def assemble_postgres_dsn(cls, v: Optional[str], info) -> str:
-        if v and isinstance(v, str) and v.strip():
-            return v.strip()
         data = info.data
+        if data.get("USE_LOCAL_SQLITE"):
+            return f"sqlite+aiosqlite:///{data.get('SQLITE_DB_PATH', './dealflow360.db')}"
+        if v and isinstance(v, str) and v.strip():
+            dsn = v.strip()
+            if dsn.startswith("postgres://"):
+                return dsn.replace("postgres://", "postgresql+asyncpg://", 1)
+            elif dsn.startswith("postgresql://") and not dsn.startswith("postgresql+"):
+                return dsn.replace("postgresql://", "postgresql+asyncpg://", 1)
+            return dsn
         user = data.get("POSTGRES_USER", "postgres")
         password = data.get("POSTGRES_PASSWORD", "postgres")
         server = data.get("POSTGRES_SERVER", "localhost")

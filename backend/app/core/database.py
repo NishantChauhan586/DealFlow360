@@ -8,15 +8,27 @@ from sqlalchemy.ext.asyncio import (
 from sqlalchemy import text
 from app.core.config import settings
 
-# Create async engine with robust connection pooling
+# Determine engine creation arguments based on database URL protocol
+is_sqlite = settings.POSTGRES_DSN.startswith("sqlite")
+
+engine_kwargs = {
+    "echo": settings.DEBUG,
+    "future": True,
+}
+
+if is_sqlite:
+    engine_kwargs["connect_args"] = {"check_same_thread": False}
+else:
+    engine_kwargs.update({
+        "pool_size": settings.DATABASE_POOL_SIZE,
+        "max_overflow": settings.DATABASE_MAX_OVERFLOW,
+        "pool_timeout": settings.DATABASE_POOL_TIMEOUT,
+        "pool_pre_ping": True,
+    })
+
 engine: AsyncEngine = create_async_engine(
     settings.POSTGRES_DSN,
-    echo=settings.DEBUG,
-    pool_size=settings.DATABASE_POOL_SIZE,
-    max_overflow=settings.DATABASE_MAX_OVERFLOW,
-    pool_timeout=settings.DATABASE_POOL_TIMEOUT,
-    pool_pre_ping=True,
-    future=True,
+    **engine_kwargs
 )
 
 # Create async sessionmaker for session lifecycle management

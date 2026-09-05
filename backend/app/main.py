@@ -4,6 +4,7 @@ from typing import Any, AsyncGenerator, Dict, List
 import uuid
 
 from fastapi import FastAPI, HTTPException, Request, status
+from starlette.exceptions import HTTPException as StarletteHTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -32,11 +33,20 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     db_healthy = await check_database_connection()
     if db_healthy:
-        logger.info("database_connection_established", dsn=settings.POSTGRES_SERVER)
+        logger.info("database_connection_established", dsn=settings.POSTGRES_DSN)
+        try:
+            from app.models.base import Base
+            # Import models to ensure registered
+            import app.models
+            async with engine.begin() as conn:
+                await conn.run_sync(Base.metadata.create_all)
+            logger.info("database_tables_initialized")
+        except Exception as err:
+            logger.error("database_table_initialization_failed", error=str(err))
     else:
         logger.warning(
             "database_connection_failed",
-            detail="Could not reach PostgreSQL server. Service started in degraded state.",
+            detail="Could not reach database server. Service started in degraded state.",
         )
 
     yield
@@ -155,12 +165,16 @@ def create_problem_response(
     return JSONResponse(
         status_code=status_code,
         content=content,
+        media_type="application/problem+json",
         headers={"Content-Type": "application/problem+json"},
     )
 
 
+@app.exception_handler(StarletteHTTPException)
 @app.exception_handler(HTTPException)
-async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
+async def http_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    status_code = getattr(exc, "status_code", 500)
+    detail = getattr(exc, "detail", str(exc))
     title_map = {
         400: "Bad Request",
         401: "Unauthorized",
@@ -171,9 +185,9 @@ async def http_exception_handler(request: Request, exc: HTTPException) -> JSONRe
         500: "Internal Server Error",
     }
     return create_problem_response(
-        status_code=exc.status_code,
-        title=title_map.get(exc.status_code, "HTTP Error"),
-        detail=str(exc.detail),
+        status_code=status_code,
+        title=title_map.get(status_code, "HTTP Error"),
+        detail=str(detail),
         instance=request.url.path,
     )
 
