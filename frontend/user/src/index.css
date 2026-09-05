@@ -109,14 +109,6 @@ button { font-family: inherit; }
   display: flex;
   align-items: center;
   gap: 10px;
-  transition: background .15s ease;
-}
-.sidebar-footer:hover {
-  background: rgba(255,255,255,0.04);
-}
-.sidebar-footer.active {
-  background: rgba(67, 138, 126, 0.18);
-  border-top-color: var(--viridian);
 }
 .avatar {
   width: 28px;

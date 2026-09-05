@@ -10,7 +10,7 @@ export default function Dashboard() {
         <HeroCanvas />
         <div className="hero-copy fade-target">
           <div className="eyebrow">Deal Health · Live</div>
-          <h2>Every deal, watched<br/>before it stalls.</h2>
+          <h2>Every deal, watched<br />before it stalls.</h2>
           <p>Anomalies, stalled quotes, and delivery slippage surface the moment they happen — not after the deal has gone cold.</p>
         </div>
         <div className="hero-stat fade-target">

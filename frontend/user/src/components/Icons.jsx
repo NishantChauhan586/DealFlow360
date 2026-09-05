@@ -16,5 +16,3 @@ export const IconCheck = (p) => <Icon {...p} d={<><path d="M9 12l2 2 4-4"/><circ
 export const IconTruck = (p) => <Icon {...p} d={<><rect x="1" y="6" width="14" height="11"/><path d="M15 10h4l3 3v4h-7z"/><circle cx="6" cy="19" r="1.6"/><circle cx="17.5" cy="19" r="1.6"/></>} />;
 export const IconRefresh = (p) => <Icon {...p} d={<><path d="M4 4v6h6"/><path d="M20 20v-6h-6"/><path d="M20 10a8 8 0 0 0-14.9-3.5M4 14a8 8 0 0 0 14.9 3.5"/></>} />;
 export const IconUsers = (p) => <Icon {...p} d={<><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17.5" cy="9" r="2.6"/><path d="M15.5 13.2a5.5 5.5 0 0 1 5.9 5.5"/></>} />;
-export const IconUser = (p) => <Icon {...p} d={<><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></>} />;
-export const IconShield = (p) => <Icon {...p} d={<><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></>} />;
