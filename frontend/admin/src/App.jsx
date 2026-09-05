@@ -1,6 +1,8 @@
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { SCREENS } from './data/mockData';
+import Login         from './pages/Login';
 import Dashboard     from './pages/Dashboard';
 import Pipeline      from './pages/Pipeline';
 import Builder       from './pages/Builder';
@@ -11,11 +13,12 @@ import Portal        from './pages/Portal';
 import './index.css';
 
 /**
- * SCREEN_MAP — maps route pathname → SCREENS key
+ * ROUTE_MAP — maps route pathname → SCREENS key
  * Used by Topbar to resolve the current page title/sub
  */
 const ROUTE_MAP = {
   '/':              'dashboard',
+  '/dashboard':     'dashboard',
   '/pipeline':      'pipeline',
   '/builder':       'builder',
   '/approval':      'approval',
@@ -24,10 +27,12 @@ const ROUTE_MAP = {
   '/portal':        'portal',
 };
 
-function Topbar() {
+function Topbar({ user, onLogout }) {
   const { pathname } = useLocation();
   const key    = ROUTE_MAP[pathname] ?? 'dashboard';
-  const screen = SCREENS[key];
+  const screen = SCREENS[key] || { title: 'Dashboard', sub: 'Overview of DealFlow360 metrics' };
+  const navigate = useNavigate();
+
   return (
     <div className="topbar">
       <div>
@@ -35,29 +40,42 @@ function Topbar() {
         <div className="sub">{screen.sub}</div>
       </div>
       <div className="topbar-actions">
-        <button className="btn btn-ghost">Reload data</button>
-        <button className="btn btn-dark">Go to backend</button>
+        {user ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{ fontSize: '13px', color: 'var(--viridian-600)', fontWeight: 600 }}>
+              User: {user.username}
+            </span>
+            <button className="btn btn-ghost" onClick={onLogout}>
+              Sign out
+            </button>
+          </div>
+        ) : (
+          <button className="btn btn-dark" onClick={() => navigate('/login')}>
+            Sign in
+          </button>
+        )}
       </div>
     </div>
   );
 }
 
-function AppShell() {
+function AppShell({ user, onLogout }) {
   return (
     <div className="app">
       <Sidebar />
       <div className="main">
-        <Topbar />
+        <Topbar user={user} onLogout={onLogout} />
         <div className="content">
           <Routes>
             <Route path="/"              element={<Dashboard />}     />
+            <Route path="/dashboard"     element={<Dashboard />}     />
             <Route path="/pipeline"      element={<Pipeline />}      />
             <Route path="/builder"       element={<Builder />}       />
             <Route path="/approval"      element={<Approval />}      />
             <Route path="/fulfillment"   element={<Fulfillment />}   />
             <Route path="/subscriptions" element={<Subscriptions />} />
             <Route path="/portal"        element={<Portal />}        />
-            <Route path="*"              element={<Navigate to="/" replace />} />
+            <Route path="*"              element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </div>
       </div>
@@ -66,9 +84,34 @@ function AppShell() {
 }
 
 export default function App() {
+  const [currentUser, setCurrentUser] = useState(() => {
+    const saved = localStorage.getItem('dealflow_user');
+    return saved ? JSON.parse(saved) : { username: 'admin' };
+  });
+
+  const handleLoginSuccess = (userData) => {
+    setCurrentUser(userData);
+    localStorage.setItem('dealflow_user', JSON.stringify(userData));
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('dealflow_user');
+  };
+
   return (
     <BrowserRouter>
-      <AppShell />
+      <Routes>
+        <Route 
+          path="/login" 
+          element={<Login onLoginSuccess={handleLoginSuccess} />} 
+        />
+        <Route 
+          path="/*" 
+          element={<AppShell user={currentUser} onLogout={handleLogout} />} 
+        />
+      </Routes>
     </BrowserRouter>
   );
 }
+

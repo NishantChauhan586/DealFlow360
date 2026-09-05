@@ -1,0 +1,568 @@
+/* DealFlow360 Custom Viridian & Burnham Split Screen Login Layout */
+
+:root {
+  --viridian: #438A7E;
+  --viridian-rgb: 67, 138, 126;
+  --burnham: #00221C;
+  --burnham-rgb: 0, 34, 28;
+  --burnham-700: #06342B;
+  --paper-bg: #EAEFEF;
+  --card-bg: #FFFFFF;
+  --text-main: #00221C;
+  --text-muted: rgba(0, 34, 28, 0.65);
+  --input-border: #D1DEDC;
+  --input-bg: #F8FAF9;
+  --error-red: #D32F2F;
+}
+
+.loginPage {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--paper-bg);
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(67, 138, 126, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 90% 90%, rgba(0, 34, 28, 0.08) 0%, transparent 50%);
+  padding: 32px 20px;
+  font-family: var(--sans, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+  color: var(--text-main);
+}
+
+/* Card Container matching Image 2 */
+.cardContainer {
+  width: 100%;
+  max-width: 980px;
+  min-height: 620px;
+  background: var(--card-bg);
+  border-radius: 24px;
+  box-shadow: 
+    0 20px 40px -15px rgba(0, 34, 28, 0.12),
+    0 0 0 1px rgba(67, 138, 126, 0.15);
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Left Form Panel */
+.leftPanel {
+  flex: 1.1;
+  padding: 44px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+  background: #FFFFFF;
+}
+
+/* Mode Switcher Tabs */
+.modeTabs {
+  display: flex;
+  background: #F1F6F5;
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid #DCEAE6;
+  gap: 4px;
+}
+
+.modeTab {
+  flex: 1;
+  height: 36px;
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.modeTabActive {
+  background: #FFFFFF;
+  color: var(--burnham);
+  box-shadow: 0 2px 6px rgba(0, 34, 28, 0.08);
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.brandLogoMark {
+  width: 28px;
+  height: 28px;
+  background: var(--viridian);
+  color: #FFFFFF;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif, 'Fraunces', serif);
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.brandName {
+  font-family: var(--serif, 'Fraunces', serif);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--burnham);
+  letter-spacing: -0.01em;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--burnham);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Demo Credentials Banner */
+.demoBanner {
+  background: rgba(67, 138, 126, 0.08);
+  border: 1px dashed rgba(67, 138, 126, 0.35);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--burnham);
+}
+
+.demoBanner code {
+  background: rgba(0, 34, 28, 0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  color: var(--viridian);
+  font-weight: 700;
+}
+
+.demoFillBtn {
+  background: var(--viridian);
+  border: none;
+  color: #FFFFFF;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.demoFillBtn:hover {
+  background: #367065;
+}
+
+/* Alerts */
+.authAlert {
+  background: #FDF2F2;
+  border: 1px solid #F87171;
+  color: #991B1B;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.successAlert {
+  background: #EDF7F5;
+  border: 1px solid #438A7E;
+  color: #00221C;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+/* Form Layout */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--burnham);
+}
+
+.forgotLink {
+  font-size: 12.5px;
+  color: var(--viridian);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 8px;
+  color: var(--burnham);
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.inputHasRightIcon {
+  padding-right: 42px;
+}
+
+.input::placeholder {
+  color: #94A3B8;
+}
+
+.input:focus {
+  border-color: var(--viridian);
+  box-shadow: 0 0 0 3px rgba(67, 138, 126, 0.2);
+  background: #FFFFFF;
+}
+
+/* Error state input */
+.inputError {
+  border-color: var(--error-red) !important;
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.15) !important;
+}
+
+.errorMessage {
+  font-size: 12px;
+  color: var(--error-red);
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Eye Toggle Button */
+.eyeButton {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #64748B;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+}
+
+.eyeButton:hover {
+  color: var(--burnham);
+}
+
+/* Checkbox Row */
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.checkboxRow input[type="checkbox"] {
+  accent-color: var(--burnham);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+/* Password Criteria Visual Box */
+.criteriaBox {
+  background: #F1F6F5;
+  border: 1px solid #DCEAE6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.criteriaHeader {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--viridian);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.criteriaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 10px;
+}
+
+.criteriaItem {
+  font-size: 11.5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #64748B;
+  transition: color 0.2s ease;
+}
+
+.criteriaItemValid {
+  color: var(--burnham);
+  font-weight: 600;
+}
+
+.criteriaDot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid #CBD5E1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  flex-shrink: 0;
+}
+
+.criteriaDotValid {
+  background: var(--viridian);
+  border-color: var(--viridian);
+  color: #FFFFFF;
+}
+
+/* Submit Button styled in Burnham #00221C */
+.submitBtn {
+  height: 46px;
+  width: 100%;
+  background: var(--burnham);
+  border: none;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 14.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 34, 28, 0.2);
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #06342B;
+  box-shadow: 0 6px 16px rgba(0, 34, 28, 0.3);
+}
+
+.submitBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Divider matching Image 2 */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
+  gap: 12px;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: #E2E8F0;
+}
+
+.dividerText {
+  font-size: 12px;
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+/* Social Login Buttons matching Image 2 */
+.socialRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.socialBtn {
+  height: 40px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--burnham);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  font-family: inherit;
+}
+
+.socialBtn:hover {
+  background: #F8FAF9;
+  border-color: var(--viridian);
+}
+
+.socialIcon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Footer Link */
+.footerText {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.footerText button {
+  background: none;
+  border: none;
+  color: var(--viridian);
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0 4px;
+}
+
+.footerText button:hover {
+  text-decoration: underline;
+}
+
+/* Right Panel - Botanical Image matching Image 2 */
+.rightPanel {
+  flex: 1;
+  background: #F4F7F6;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leafImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
+}
+
+.rightPanelOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 34, 28, 0.05) 0%, rgba(0, 34, 28, 0.25) 100%);
+  pointer-events: none;
+}
+
+.brandOverlayText {
+  position: absolute;
+  bottom: 32px;
+  left: 32px;
+  right: 32px;
+  color: #FFFFFF;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.brandOverlayText h3 {
+  font-family: var(--serif, 'Fraunces', serif);
+  font-size: 22px;
+  margin: 0 0 4px 0;
+}
+
+.brandOverlayText p {
+  font-size: 13px;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 860px) {
+  .rightPanel {
+    display: none;
+  }
+  
+  .cardContainer {
+    max-width: 480px;
+    min-height: auto;
+  }
+
+  .leftPanel {
+    padding: 36px 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .socialRow {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+}
