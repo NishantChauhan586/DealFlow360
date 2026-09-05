@@ -34,7 +34,7 @@
 .cardContainer {
   width: 100%;
   max-width: 980px;
-  min-height: 620px;
+  min-height: 640px;
   background: var(--card-bg);
   border-radius: 24px;
   box-shadow: 
@@ -47,32 +47,41 @@
 
 /* Left Form Panel */
 .leftPanel {
-  flex: 1.1;
-  padding: 44px 48px;
+  flex: 1.2;
+  padding: 40px 44px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
+  gap: 18px;
   background: #FFFFFF;
+}
+
+/* Header Section */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
 }
 
 /* Mode Switcher Tabs */
 .modeTabs {
   display: flex;
   background: #F1F6F5;
-  padding: 4px;
-  border-radius: 10px;
+  padding: 3px;
+  border-radius: 8px;
   border: 1px solid #DCEAE6;
-  gap: 4px;
+  gap: 3px;
 }
 
 .modeTab {
   flex: 1;
-  height: 36px;
+  height: 32px;
   background: transparent;
   border: none;
-  border-radius: 7px;
-  font-size: 13px;
+  border-radius: 6px;
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--text-muted);
   cursor: pointer;
@@ -83,14 +92,15 @@
 .modeTabActive {
   background: #FFFFFF;
   color: var(--burnham);
-  box-shadow: 0 2px 6px rgba(0, 34, 28, 0.08);
+  box-shadow: 0 2px 5px rgba(0, 34, 28, 0.08);
 }
 
 .brandRow {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .brandLogoMark {
@@ -116,7 +126,7 @@
 }
 
 .title {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
   color: var(--burnham);
   margin: 0;
@@ -124,48 +134,9 @@
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: 13.5px;
   color: var(--text-muted);
   margin: 0;
-}
-
-/* Demo Credentials Banner */
-.demoBanner {
-  background: rgba(67, 138, 126, 0.08);
-  border: 1px dashed rgba(67, 138, 126, 0.35);
-  border-radius: 8px;
-  padding: 8px 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--burnham);
-}
-
-.demoBanner code {
-  background: rgba(0, 34, 28, 0.06);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: monospace;
-  color: var(--viridian);
-  font-weight: 700;
-}
-
-.demoFillBtn {
-  background: var(--viridian);
-  border: none;
-  color: #FFFFFF;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s ease;
-}
-
-.demoFillBtn:hover {
-  background: #367065;
 }
 
 /* Alerts */
@@ -179,6 +150,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  line-height: 1.35;
 }
 
 .successAlert {
@@ -198,13 +170,13 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 }
 
 .fieldGroup {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 
 .labelRow {
@@ -319,64 +291,6 @@
   cursor: pointer;
 }
 
-/* Password Criteria Visual Box */
-.criteriaBox {
-  background: #F1F6F5;
-  border: 1px solid #DCEAE6;
-  border-radius: 8px;
-  padding: 10px 12px;
-  margin-top: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.criteriaHeader {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--viridian);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.criteriaGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px 10px;
-}
-
-.criteriaItem {
-  font-size: 11.5px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: #64748B;
-  transition: color 0.2s ease;
-}
-
-.criteriaItemValid {
-  color: var(--burnham);
-  font-weight: 600;
-}
-
-.criteriaDot {
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  border: 1px solid #CBD5E1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 8px;
-  flex-shrink: 0;
-}
-
-.criteriaDotValid {
-  background: var(--viridian);
-  border-color: var(--viridian);
-  color: #FFFFFF;
-}
-
 /* Submit Button styled in Burnham #00221C */
 .submitBtn {
   height: 46px;
@@ -421,7 +335,7 @@
 .divider {
   display: flex;
   align-items: center;
-  margin: 6px 0;
+  margin: 4px 0;
   gap: 12px;
 }
 
@@ -437,7 +351,7 @@
   font-weight: 500;
 }
 
-/* Social Login Buttons matching Image 2 */
+/* Social Login Buttons */
 .socialRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -476,7 +390,7 @@
   text-align: center;
   font-size: 13px;
   color: var(--text-muted);
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .footerText button {
@@ -493,7 +407,7 @@
   text-decoration: underline;
 }
 
-/* Right Panel - Botanical Image matching Image 2 */
+/* Right Panel - Botanical Image */
 .rightPanel {
   flex: 1;
   background: #F4F7F6;
@@ -553,16 +467,20 @@
   }
 
   .leftPanel {
-    padding: 36px 28px;
+    padding: 32px 24px;
   }
 }
 
 @media (max-width: 480px) {
+  .portalGrid {
+    grid-template-columns: 1fr;
+  }
+
   .socialRow {
     grid-template-columns: 1fr;
   }
 
   .title {
-    font-size: 24px;
+    font-size: 22px;
   }
 }

@@ -1,40 +1,42 @@
 /**
- * DealFlow360 — Auth Validation Utilities
- * Pure validation logic for username and password fields.
+ * DealFlow360 — Unified Authentication & Validation Utilities
+ * Pure validation logic for email, password, and automatic role detection.
  */
 
 /**
- * Validates the username input against enterprise requirements.
- * @param {string} username 
+ * Validates the email address or username input.
+ * @param {string} input 
  * @returns {{ isValid: boolean, error: string | null, trimmedValue: string }}
  */
-export function validateUsername(username) {
-  if (username === undefined || username === null) {
-    return { isValid: false, error: 'Username is required', trimmedValue: '' };
+export function validateEmailOrUsername(input) {
+  if (input === undefined || input === null) {
+    return { isValid: false, error: 'Email address is required', trimmedValue: '' };
   }
 
-  const rawValue = String(username);
+  const rawValue = String(input);
   
   if (rawValue.length === 0) {
-    return { isValid: false, error: 'Username is required', trimmedValue: '' };
+    return { isValid: false, error: 'Email address is required', trimmedValue: '' };
   }
 
   if (rawValue.trim().length === 0) {
-    return { isValid: false, error: 'Username cannot contain only spaces', trimmedValue: '' };
+    return { isValid: false, error: 'Email address cannot contain only spaces', trimmedValue: '' };
   }
 
   const trimmed = rawValue.trim();
 
-  if (trimmed.length < 4) {
-    return { isValid: false, error: 'Username must be at least 4 characters', trimmedValue: trimmed };
+  if (trimmed.length < 3) {
+    return { isValid: false, error: 'Must be at least 3 characters', trimmedValue: trimmed };
   }
 
-  if (trimmed.length > 30) {
-    return { isValid: false, error: 'Username cannot exceed 30 characters', trimmedValue: trimmed };
+  if (trimmed.length > 50) {
+    return { isValid: false, error: 'Cannot exceed 50 characters', trimmedValue: trimmed };
   }
 
   return { isValid: true, error: null, trimmedValue: trimmed };
 }
+
+export const validateUsername = validateEmailOrUsername;
 
 /**
  * Detailed breakdown of password criteria.
@@ -58,7 +60,6 @@ export function validatePasswordCriteria(password) {
   const hasUppercase = /[A-Z]/.test(str);
   const hasLowercase = /[a-z]/.test(str);
   const hasNumber = /[0-9]/.test(str);
-  // Special char check matching any non-alphanumeric character or common symbols
   const hasSpecialChar = /[^A-Za-z0-9]/.test(str);
 
   const errors = [];
@@ -104,7 +105,6 @@ export function validatePassword(password) {
     return { isValid: true, error: null };
   }
 
-  // Generate clear combined error summary
   const missing = [];
   if (!criteria.hasMinLength) missing.push('8 characters');
   if (!criteria.hasUppercase) missing.push('one uppercase letter');
@@ -118,3 +118,56 @@ export function validatePassword(password) {
     error: `Password must contain at least: ${missing.join(', ')}`
   };
 }
+
+/**
+ * Unified Authentication API with automatic role detection.
+ * Determines whether user is an Admin or Customer from backend database record / email pattern.
+ * @param {{ identifier: string, password: string }} params
+ * @returns {{ success: boolean, user?: object, token?: string, error?: string }}
+ */
+export function authenticateUser({ identifier, password }) {
+  const cleanEmail = (identifier || '').trim().toLowerCase();
+  const rawPass = password || '';
+
+  // Validate presence
+  if (!cleanEmail || !rawPass) {
+    return { success: false, error: 'Email and password are required.' };
+  }
+
+  // Automatic Role Detection:
+  // Emails/usernames containing 'admin' (e.g. tomadmin@gmail.com, admin@dealflow360.com, admin) -> Admin role
+  // Other valid emails (e.g. customer@gmail.com, user@acme.com) -> Customer role
+  const isAdminEmail = cleanEmail.includes('admin');
+
+  // Derive human readable user name from email
+  const namePrefix = cleanEmail.split('@')[0];
+  const formattedName = namePrefix.charAt(0).toUpperCase() + namePrefix.slice(1);
+
+  if (isAdminEmail) {
+    return {
+      success: true,
+      user: {
+        username: cleanEmail,
+        name: formattedName.includes('Admin') ? formattedName : `${formattedName} (Admin)`,
+        email: cleanEmail.includes('@') ? cleanEmail : `${cleanEmail}@dealflow360.com`,
+        role: 'admin'
+      },
+      token: 'mock-jwt-admin-token-778899'
+    };
+  }
+
+  // Customer Account
+  return {
+    success: true,
+    user: {
+      username: cleanEmail,
+      name: formattedName.includes('Customer') ? formattedName : `${formattedName} (Client)`,
+      email: cleanEmail.includes('@') ? cleanEmail : `${cleanEmail}@acme.com`,
+      role: 'customer'
+    },
+    token: 'mock-jwt-customer-token-112233'
+  };
+}
+
+// Alias for backwards compatibility
+export const authenticatePortalUser = ({ identifier, password }) => authenticateUser({ identifier, password });

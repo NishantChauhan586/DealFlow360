@@ -12,7 +12,7 @@ import {
   XCircle
 } from 'lucide-react';
 
-import { validateUsername, validatePassword } from '../utils/validation';
+import { validateEmailOrUsername, validatePassword, authenticateUser } from '../utils/validation';
 import styles from './Login.module.css';
 
 export default function Login({ onLoginSuccess }) {
@@ -21,12 +21,12 @@ export default function Login({ onLoginSuccess }) {
   // Mode State: 'signin' | 'signup'
   const [mode, setMode] = useState('signin');
 
-  // Form State
+  // Form Fields State
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(true);
 
-  // Touch tracking
+  // Interaction Touch Tracking
   const [usernameTouched, setUsernameTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
 
@@ -43,8 +43,8 @@ export default function Login({ onLoginSuccess }) {
   const usernameErrorId = `${usernameId}-error`;
   const passwordErrorId = `${passwordId}-error`;
 
-  // Validation Logic
-  const usernameResult = validateUsername(username);
+  // Real-time Validation
+  const usernameResult = validateEmailOrUsername(username);
   const passwordResult = validatePassword(password);
 
   const isFormValid = usernameResult.isValid && passwordResult.isValid;
@@ -57,33 +57,39 @@ export default function Login({ onLoginSuccess }) {
 
   const handleForgotPassword = (e) => {
     e.preventDefault();
-    setInfoMessage('Password reset instructions sent to your registered email.');
+    setInfoMessage('Password reset instructions sent to your email address.');
     setTimeout(() => setInfoMessage(''), 4000);
-  };
-
-  const handleSocialClick = (provider) => {
-    setIsLoading(true);
-    setInfoMessage(`Connecting to ${provider} SSO...`);
-    setAuthError('');
-    setAuthSuccess(false);
-
-    setTimeout(() => {
-      setIsLoading(false);
-      setAuthSuccess(true);
-      const ssoUser = `${provider} User`;
-      if (typeof onLoginSuccess === 'function') {
-        onLoginSuccess({ username: ssoUser });
-      }
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 800);
-    }, 1200);
   };
 
   const handleModeSwitch = (newMode) => {
     setMode(newMode);
     setAuthError('');
     setAuthSuccess(false);
+  };
+
+  const handleSocialClick = (provider) => {
+    setIsLoading(true);
+    setInfoMessage(`Authenticating with ${provider} SSO...`);
+    setAuthError('');
+    setAuthSuccess(false);
+
+    setTimeout(() => {
+      setIsLoading(false);
+      const ssoUser = {
+        username: `${provider.toLowerCase()}_user`,
+        name: `${provider} User`,
+        email: `user@${provider.toLowerCase()}.com`,
+        role: 'customer'
+      };
+
+      setAuthSuccess(true);
+      if (typeof onLoginSuccess === 'function') {
+        onLoginSuccess(ssoUser);
+      }
+      setTimeout(() => {
+        navigate('/portal');
+      }, 800);
+    }, 1200);
   };
 
   // Submit Handler
@@ -98,34 +104,33 @@ export default function Login({ onLoginSuccess }) {
     setAuthError('');
     setAuthSuccess(false);
 
-    // Simulate 1.5s Authentication Request
+    // Simulate Network Auth Request & Automatic Role Detection
     setTimeout(() => {
       setIsLoading(false);
-      const cleanUsername = username.trim();
+      
+      const authResponse = authenticateUser({
+        identifier: username,
+        password: password
+      });
 
-      if (mode === 'signin') {
-        if (cleanUsername === 'admin' && password === 'Admin@123') {
-          setAuthSuccess(true);
-          if (typeof onLoginSuccess === 'function') {
-            onLoginSuccess({ username: cleanUsername });
-          }
-          setTimeout(() => {
-            navigate('/dashboard');
-          }, 800);
-        } else {
-          setAuthError('Invalid username or password.');
-        }
-      } else {
-        // Sign Up Simulation
+      if (authResponse.success) {
         setAuthSuccess(true);
         if (typeof onLoginSuccess === 'function') {
-          onLoginSuccess({ username: cleanUsername });
+          onLoginSuccess(authResponse.user);
         }
+        
+        // Automatic redirection based on user's role
         setTimeout(() => {
-          navigate('/dashboard');
+          if (authResponse.user.role === 'admin') {
+            navigate('/dashboard');
+          } else {
+            navigate('/portal');
+          }
         }, 800);
+      } else {
+        setAuthError(authResponse.error || 'Invalid email or password.');
       }
-    }, 1500);
+    }, 1300);
   };
 
   return (
@@ -136,7 +141,7 @@ export default function Login({ onLoginSuccess }) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.35, ease: 'easeOut' }}
       >
-        {/* Left Side: Form Section */}
+        {/* Left Side: Unified Form Section */}
         <div className={styles.leftPanel}>
           
           {/* Header */}
@@ -146,17 +151,17 @@ export default function Login({ onLoginSuccess }) {
               <span className={styles.brandName}>DealFlow360</span>
             </div>
             <h1 className={styles.title}>
-              {mode === 'signin' ? 'Sign In to Account' : 'Get Started Now'}
+              {mode === 'signin' ? 'Sign In' : 'Create Account'}
             </h1>
             <p className={styles.subtitle}>
               {mode === 'signin' 
-                ? 'Enter your account details to access your dashboard'
+                ? 'Enter your email address and password to access your account'
                 : 'Create your DealFlow360 account to get started'
               }
             </p>
           </div>
 
-          {/* Mode Switcher Tabs */}
+          {/* Mode Switcher Tabs (Sign In / Sign Up) */}
           <div className={styles.modeTabs}>
             <button 
               type="button"
@@ -200,9 +205,7 @@ export default function Login({ onLoginSuccess }) {
                 role="status"
               >
                 <CheckCircle2 size={16} />
-                <span>
-                  {mode === 'signin' ? 'Sign in successful!' : 'Account created successfully!'} Redirecting...
-                </span>
+                <span>Authentication successful! Redirecting...</span>
               </motion.div>
             )}
 
@@ -224,17 +227,17 @@ export default function Login({ onLoginSuccess }) {
           {/* Form */}
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
             
-            {/* Username Input */}
+            {/* Email Address Field */}
             <div className={styles.fieldGroup}>
               <label htmlFor={usernameId} className={styles.label}>
-                Name / Username
+                Email Address
               </label>
               <div className={styles.inputWrapper}>
                 <input
                   id={usernameId}
                   type="text"
                   className={`${styles.input} ${showUsernameError ? styles.inputError : ''}`}
-                  placeholder="Enter your name or username"
+                  placeholder="Enter your email address"
                   value={username}
                   onChange={(e) => {
                     setUsername(e.target.value);
@@ -262,7 +265,7 @@ export default function Login({ onLoginSuccess }) {
               )}
             </div>
 
-            {/* Password Input */}
+            {/* Password Field */}
             <div className={styles.fieldGroup}>
               <div className={styles.labelRow}>
                 <label htmlFor={passwordId} className={styles.label}>
@@ -335,7 +338,7 @@ export default function Login({ onLoginSuccess }) {
               <label htmlFor="terms">I agree to the terms & policy</label>
             </div>
 
-            {/* Main Submit Button */}
+            {/* Main Submit Button - Simply "Sign In" */}
             <motion.button
               type="submit"
               className={styles.submitBtn}

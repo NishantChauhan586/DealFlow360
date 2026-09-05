@@ -44,5 +44,5 @@ export const SCREENS = {
   approval:      { title:'Discount Approval',            sub:'Blended risk scoring and the approval chain' },
   fulfillment:   { title:'Fulfillment & Warehouse Split',sub:'Live stock-aware shipment planning' },
   subscriptions: { title:'Subscriptions & Billing',      sub:'One-time and recurring lines, reconciled' },
-  portal:        { title:'Customer Portal',              sub:'What Acme Corp sees when they open the link' },
+  portal:        { title:'Customer Portal',              sub:'Self-service quotation management and submission' },
 };
