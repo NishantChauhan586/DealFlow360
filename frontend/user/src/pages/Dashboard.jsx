@@ -1,6 +1,7 @@
 import { HeroCanvas } from '../components/HeroCanvas';
 import { CountUp, useEnter } from '../components/Animations';
 import { stalledDeals, anomalies } from '../data/mockData';
+import AuthorityManagement from '../components/dashboard/AuthorityManagement';
 
 export default function Dashboard() {
   const ref = useEnter([]);
@@ -82,6 +83,9 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Administration: Authority Management Section */}
+      <AuthorityManagement />
     </div>
   );
 }
