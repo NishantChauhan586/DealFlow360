@@ -1,0 +1,89 @@
+version: "3.8"
+
+services:
+  # ============================================================================
+  # PostgreSQL Database Service
+  # ============================================================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: dealflow360_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-dealflow360}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-dealflow360}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - dealflow360_net
+
+  # ============================================================================
+  # Redis Cache & Message Broker Service
+  # ============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: dealflow360_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - dealflow360_net
+
+  # ============================================================================
+  # DealFlow360 FastAPI Application Service
+  # ============================================================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dealflow360_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_SERVER=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - POSTGRES_DB=${POSTGRES_DB:-dealflow360}
+      - POSTGRES_DSN=postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-dealflow360}
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - dealflow360_net
+
+# ==============================================================================
+# Persistent Volumes & Networks
+# ==============================================================================
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  dealflow360_net:
+    driver: bridge

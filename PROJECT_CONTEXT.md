@@ -131,7 +131,7 @@ DealFlow360/
 ## 6. Developer Guidelines for Future Add-Ons
 
 1. **State & Mock Contract Management**:
-   - Add new datasets or state stores inside `frontend/admin/src/data/mockData.js`.
+   - Add new datasets or state stores inside `frontend/user/src/data/mockData.js`.
    - Keep business rule fields explicit (e.g., `discountCeiling`, `marginFloor`, `approvalTier`, `fulfillmentStatus`).
 2. **Page Development Workflow**:
    - Create the page in `src/pages/[PageName].jsx`.

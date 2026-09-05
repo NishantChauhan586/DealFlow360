@@ -1,0 +1,429 @@
+/* ============================================================
+   Login.module.css — DealFlow360 Enterprise Authentication
+   ============================================================ */
+
+.loginPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  padding: 24px;
+}
+
+.cardContainer {
+  display: flex;
+  width: 100%;
+  max-width: 980px;
+  min-height: 600px;
+  background: var(--white);
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 36px rgba(0, 34, 28, 0.08);
+  overflow: hidden;
+}
+
+/* ---------- Left Panel (Form) ---------- */
+.leftPanel {
+  flex: 1.15;
+  padding: 44px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.brandLogoMark {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--burnham);
+  color: var(--viridian-100);
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brandName {
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--burnham);
+  letter-spacing: -0.01em;
+}
+
+.title {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--ink);
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--ink-60);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Mode Tabs */
+.modeTabs {
+  display: flex;
+  background: var(--paper-2);
+  border-radius: 6px;
+  padding: 3px;
+  margin-bottom: 20px;
+  gap: 2px;
+}
+
+.modeTab {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: var(--ink-60);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.modeTabActive {
+  background: var(--white);
+  color: var(--burnham);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Alerts */
+.authAlert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: var(--rose-100);
+  color: var(--rose);
+  font-size: 12.5px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  border: 1px solid rgba(176, 74, 61, 0.2);
+}
+
+.successAlert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: var(--viridian-100);
+  color: var(--viridian-600);
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  border: 1px solid rgba(67, 138, 126, 0.2);
+}
+
+/* Form & Inputs */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.forgotLink {
+  background: transparent;
+  border: none;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--viridian-600);
+  cursor: pointer;
+  padding: 0;
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 13.5px;
+  font-family: var(--sans);
+  background: var(--white);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.inputHasRightIcon {
+  padding-right: 40px;
+}
+
+.input:focus {
+  border-color: var(--viridian);
+  box-shadow: 0 0 0 3px rgba(67, 138, 126, 0.15);
+}
+
+.inputError {
+  border-color: var(--rose) !important;
+  background: rgba(241, 218, 213, 0.2);
+}
+
+.eyeButton {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--ink-40);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+}
+
+.eyeButton:hover {
+  color: var(--ink);
+}
+
+.errorMessage {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: var(--rose);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--ink-60);
+  margin-top: -4px;
+}
+
+.checkboxRow input[type="checkbox"] {
+  accent-color: var(--viridian);
+  cursor: pointer;
+}
+
+.checkboxRow label {
+  cursor: pointer;
+}
+
+.submitBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--burnham);
+  color: var(--white);
+  border: 1px solid var(--burnham);
+  border-radius: var(--radius);
+  padding: 11px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  margin-top: 4px;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: var(--burnham-700);
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.dividerText {
+  font-size: 11.5px;
+  color: var(--ink-40);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Social Login */
+.socialRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.socialBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.socialBtn:hover {
+  background: var(--paper-2);
+}
+
+.socialIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.footerText {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--ink-60);
+}
+
+.footerText button {
+  background: transparent;
+  border: none;
+  color: var(--viridian-600);
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.footerText button:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Right Panel (Botanical Atmosphere) ---------- */
+.rightPanel {
+  flex: 0.85;
+  position: relative;
+  background: 
+    radial-gradient(circle at 80% 20%, rgba(67, 138, 126, 0.35) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(12, 68, 56, 0.9) 0%, transparent 60%),
+    linear-gradient(145deg, var(--burnham) 0%, #02120e 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 36px 32px;
+}
+
+.leafImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+}
+
+.rightPanelOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 34, 28, 0.1) 0%, rgba(0, 34, 28, 0.85) 100%);
+}
+
+.brandOverlayText {
+  position: relative;
+  z-index: 2;
+  color: var(--white);
+}
+
+.brandOverlayText h3 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 22px;
+  margin: 0 0 6px;
+}
+
+.brandOverlayText p {
+  font-size: 13px;
+  color: rgba(220, 234, 230, 0.8);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+  .rightPanel {
+    display: none;
+  }
+  .cardContainer {
+    max-width: 500px;
+  }
+  .leftPanel {
+    padding: 32px 24px;
+  }
+  .socialRow {
+    grid-template-columns: 1fr;
+  }
+}

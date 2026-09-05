@@ -45,4 +45,5 @@ export const SCREENS = {
   fulfillment:   { title:'Fulfillment & Warehouse Split',sub:'Live stock-aware shipment planning' },
   subscriptions: { title:'Subscriptions & Billing',      sub:'One-time and recurring lines, reconciled' },
   portal:        { title:'Customer Portal',              sub:'What Acme Corp sees when they open the link' },
+  profile:       { title:'User Profile & Governance',    sub:'Commercial authority limits, delegation rules, and account preferences' },
 };

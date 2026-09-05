@@ -1,7 +1,8 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { LogOut } from 'lucide-react';
 import {
   IconDash, IconPipe, IconCart,
-  IconCheck, IconTruck, IconRefresh, IconUsers,
+  IconCheck, IconTruck, IconRefresh, IconUsers, IconUser,
 } from '../components/Icons';
 
 const NAV_ITEMS = [
@@ -12,9 +13,12 @@ const NAV_ITEMS = [
   { to: '/fulfillment',   label: 'Fulfillment',           icon: IconTruck        },
   { to: '/subscriptions', label: 'Subscriptions',         icon: IconRefresh      },
   { to: '/portal',        label: 'Customer Portal',       icon: IconUsers        },
+  { to: '/profile',       label: 'User Profile & Authority', icon: IconUser      },
 ];
 
 export function Sidebar() {
+  const navigate = useNavigate();
+
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
@@ -38,12 +42,38 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div className="sidebar-footer">
-        <div className="avatar">SA</div>
-        <div>
-          <div style={{ color: '#fff', fontWeight: 600 }}>Sade Adeyemi</div>
-          <div>Sales Rep · East Region</div>
-        </div>
+      <div style={{ display: 'flex', alignItems: 'center', borderTop: '1px solid var(--line-dark)' }}>
+        <NavLink 
+          to="/profile" 
+          className={({ isActive }) => `sidebar-footer${isActive ? ' active' : ''}`}
+          style={{ textDecoration: 'none', cursor: 'pointer', transition: 'background .15s ease', flex: 1, borderTop: 'none' }}
+        >
+          <div className="avatar">SA</div>
+          <div>
+            <div style={{ color: '#fff', fontWeight: 600 }}>Sade Adeyemi</div>
+            <div style={{ fontSize: '11.5px', color: 'rgba(220,234,230,0.65)' }}>Sales Rep · East Region</div>
+          </div>
+        </NavLink>
+        <button
+          type="button"
+          onClick={() => navigate('/login')}
+          title="Sign Out"
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: 'rgba(220,234,230,0.5)',
+            cursor: 'pointer',
+            padding: '12px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            transition: 'color .15s ease',
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.color = '#F1DAD5'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'rgba(220,234,230,0.5)'}
+        >
+          <LogOut size={16} />
+        </button>
       </div>
     </aside>
   );
