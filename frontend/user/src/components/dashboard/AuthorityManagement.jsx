@@ -18,7 +18,7 @@ const DEFAULT_AUTHORITIES = [
     id: 'AUTH-001',
     name: 'John Doe',
     email: 'john@example.com',
-    role: 'Sales Manager'
+    role: 'Sales Manager / Approver'
   }
 ];
 
@@ -36,7 +36,7 @@ export default function AuthorityManagement() {
 
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('Sales Manager');
+  const [role, setRole] = useState('Sales Representative');
   const [notification, setNotification] = useState('');
   const [isRotating, setIsRotating] = useState(false);
 
@@ -78,7 +78,7 @@ export default function AuthorityManagement() {
     setNotification(`Authority ${newAuthority.id} appointed successfully.`);
     setFullName('');
     setEmail('');
-    setRole('Sales Manager');
+    setRole('Sales Representative');
 
     setTimeout(() => {
       setNotification('');
@@ -183,11 +183,9 @@ export default function AuthorityManagement() {
                   onChange={(e) => setRole(e.target.value)}
                   className={styles.select}
                 >
-                  <option value="Sales Manager">Sales Manager</option>
-                  <option value="Finance Director">Finance Director</option>
-                  <option value="Operations Lead">Operations Lead</option>
-                  <option value="Pricing VP">Pricing VP</option>
-                  <option value="Legal Counsel">Legal Counsel</option>
+                  <option value="Sales Representative">Sales Representative</option>
+                  <option value="Sales Manager / Approver">Sales Manager / Approver</option>
+                  <option value="Finance / Operation User">Finance / Operation User</option>
                 </select>
               </div>
             </div>

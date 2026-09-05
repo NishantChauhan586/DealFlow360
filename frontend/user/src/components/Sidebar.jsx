@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import {
   IconDash, IconPipe, IconCart,
-  IconCheck, IconTruck, IconRefresh, IconUsers,
+  IconCheck, IconTruck, IconRefresh, IconUsers, IconShield,
 } from '../components/Icons';
 
 const ADMIN_NAV_ITEMS = [
@@ -11,6 +11,7 @@ const ADMIN_NAV_ITEMS = [
   { to: '/approval',      label: 'Approvals',             icon: IconCheck        },
   { to: '/fulfillment',   label: 'Fulfillment',           icon: IconTruck        },
   { to: '/subscriptions', label: 'Subscriptions',         icon: IconRefresh      },
+  { to: '/authorities',   label: 'Authority Management',  icon: IconShield       },
 ];
 
 const CUSTOMER_NAV_ITEMS = [
