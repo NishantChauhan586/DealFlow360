@@ -3,8 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "dev": "npm run dev --prefix frontend/admin",
-    "build": "npm run build --prefix frontend/admin",
-    "preview": "npm run preview --prefix frontend/admin"
+    "dev": "npm run dev --prefix frontend/user",
+    "build": "npm run build --prefix frontend/user",
+    "preview": "npm run preview --prefix frontend/user"
   }
 }
