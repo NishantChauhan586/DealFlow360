@@ -1,0 +1,539 @@
+/* Fulfillment.module.css — Editorial Luxury Enterprise SaaS Aesthetics */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Header & Tabs */
+.headerCard {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 24px 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 34, 28, 0.04);
+}
+
+.headerTop {
+  display: flex;
+  justifyContent: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.titleArea h2 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--burnham);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.titleArea p {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: var(--ink-60);
+}
+
+.tabNav {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid transparent;
+  overflow-x: auto;
+  margin-top: 4px;
+}
+
+.tabBtn {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 16px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-60);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.tabBtn:hover {
+  color: var(--burnham);
+}
+
+.tabBtn.activeTab {
+  color: var(--burnham);
+  font-weight: 700;
+  border-bottom-color: var(--viridian);
+}
+
+.tabBadge {
+  background: var(--paper-2);
+  color: var(--burnham);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 12px;
+}
+
+/* Warehouse Selector Chips Bar */
+.facilitySelectorBar {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  box-shadow: 0 1px 3px rgba(0, 34, 28, 0.04);
+}
+
+.facilityLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-60);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 4px;
+}
+
+.facilityChip {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+
+.facilityChip:hover {
+  border-color: var(--viridian-300);
+}
+
+.facilityChip.activeChip {
+  background: var(--burnham);
+  color: #ffffff;
+  border-color: var(--burnham);
+  font-weight: 600;
+}
+
+.chipCountBadge {
+  background: rgba(0, 34, 28, 0.1);
+  color: var(--burnham);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.activeChip .chipCountBadge {
+  background: var(--viridian);
+  color: #ffffff;
+}
+
+/* Summary Card */
+.summaryBanner {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  display: flex;
+  justifyContent: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.summaryCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.summaryCol .label {
+  font-size: 11.5px;
+  color: var(--ink-60);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.summaryCol .value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--burnham);
+  margin-top: 2px;
+}
+
+/* Inventory Table */
+.tableCard {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 34, 28, 0.04);
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.inventoryTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.inventoryTable th {
+  background: var(--paper-2);
+  color: var(--ink-60);
+  font-weight: 600;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.inventoryTable td {
+  padding: 14px;
+  border-bottom: 1px solid rgba(8, 32, 26, 0.06);
+  vertical-align: middle;
+}
+
+.inventoryTable tr:hover td {
+  background: rgba(67, 138, 126, 0.03);
+}
+
+.productCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 220px;
+}
+
+.thumbnail {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  object-fit: cover;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.productName {
+  font-weight: 600;
+  color: var(--burnham);
+  font-size: 13.5px;
+}
+
+.productSub {
+  font-size: 11.5px;
+  color: var(--ink-60);
+  margin-top: 2px;
+}
+
+.skuBadge {
+  font-family: monospace;
+  font-size: 11px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 2px 5px;
+  border-radius: 3px;
+  color: var(--ink);
+}
+
+.stockBadgeHealthy {
+  background: var(--viridian-100);
+  color: var(--viridian-600);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.stockBadgeLow {
+  background: var(--amber-100);
+  color: var(--amber);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.stockBadgeReorder {
+  background: var(--rose-100);
+  color: var(--rose);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.actionBtnGroup {
+  display: flex;
+  align-items: center;
+  justifyContent: flex-end;
+  gap: 6px;
+}
+
+.smallBtn {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--burnham);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.smallBtn:hover {
+  background: var(--burnham);
+  color: #ffffff;
+}
+
+.smallBtnDanger {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--rose);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.smallBtnDanger:hover {
+  background: var(--rose);
+  color: #ffffff;
+  border-color: var(--rose);
+}
+
+.primaryBtn {
+  background: var(--burnham);
+  color: #ffffff;
+  border: 1px solid var(--burnham);
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.primaryBtn:hover {
+  background: var(--viridian);
+  border-color: var(--viridian);
+}
+
+/* Facility Management Cards Grid */
+.facilityGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+}
+
+.facilityCard {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 1px 3px rgba(0, 34, 28, 0.04);
+}
+
+.facilityTop {
+  display: flex;
+  justifyContent: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.facilityTitle {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--burnham);
+  margin: 0;
+}
+
+.facilityLoc {
+  font-size: 12px;
+  color: var(--ink-60);
+  margin-top: 3px;
+}
+
+.weightTag {
+  background: var(--paper-2);
+  color: var(--burnham);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+
+.metaItem .metaLabel {
+  color: var(--ink-40);
+  display: block;
+}
+
+.metaItem .metaVal {
+  font-weight: 600;
+  color: var(--burnham);
+  margin-top: 2px;
+}
+
+/* Auto Split Simulator Styles */
+.splitCard {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 1px 3px rgba(0, 34, 28, 0.04);
+}
+
+.splitHeader {
+  display: flex;
+  justifyContent: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.allocationBox {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 16px;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.whRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.whName {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--burnham);
+  width: 150px;
+  flex-shrink: 0;
+}
+
+.whBarTrack {
+  flex: 1;
+  height: 8px;
+  background: var(--paper-2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.whBarFill {
+  height: 100%;
+  background: var(--viridian);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.whQty {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--burnham);
+  width: 140px;
+  text-align: right;
+}
+
+.whFee {
+  font-size: 12px;
+  color: var(--ink-60);
+  width: 110px;
+  text-align: right;
+}
+
+.backorderBanner {
+  background: var(--amber-100);
+  border: 1px solid rgba(192, 122, 56, 0.25);
+  padding: 14px 18px;
+  border-radius: 6px;
+  display: flex;
+  justifyContent: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #5c350d;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .headerTop {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .whRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .whName, .whQty, .whFee {
+    width: 100%;
+    text-align: left;
+  }
+  .whBarTrack {
+    width: 100%;
+  }
+}

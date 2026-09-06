@@ -8,27 +8,15 @@ from sqlalchemy.ext.asyncio import (
 from sqlalchemy import text
 from app.core.config import settings
 
-# Determine engine creation arguments based on database URL protocol
-is_sqlite = settings.POSTGRES_DSN.startswith("sqlite")
-
-engine_kwargs = {
-    "echo": settings.DEBUG,
-    "future": True,
-}
-
-if is_sqlite:
-    engine_kwargs["connect_args"] = {"check_same_thread": False}
-else:
-    engine_kwargs.update({
-        "pool_size": settings.DATABASE_POOL_SIZE,
-        "max_overflow": settings.DATABASE_MAX_OVERFLOW,
-        "pool_timeout": settings.DATABASE_POOL_TIMEOUT,
-        "pool_pre_ping": True,
-    })
-
+# Configure async PostgreSQL engine with connection pooling and pre-ping
 engine: AsyncEngine = create_async_engine(
     settings.POSTGRES_DSN,
-    **engine_kwargs
+    echo=settings.DEBUG,
+    future=True,
+    pool_size=settings.DATABASE_POOL_SIZE,
+    max_overflow=settings.DATABASE_MAX_OVERFLOW,
+    pool_timeout=settings.DATABASE_POOL_TIMEOUT,
+    pool_pre_ping=True,
 )
 
 # Create async sessionmaker for session lifecycle management
@@ -58,7 +46,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 async def check_database_connection() -> bool:
     """
-    Executes a lightweight query (SELECT 1) to verify database connectivity.
+    Executes a lightweight query (SELECT 1) to verify PostgreSQL database connectivity.
     """
     try:
         async with engine.connect() as conn:

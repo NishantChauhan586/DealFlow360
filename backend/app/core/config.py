@@ -5,14 +5,19 @@ from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
+import os
+
 class Settings(BaseSettings):
     """
     Application Settings loaded from environment variables and .env file.
-    Defines infrastructure, database, security, and runtime configs.
+    Configured for Python + PostgreSQL (asyncpg) backend architecture.
     """
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=[
+            os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".env"),
+            ".env"
+        ],
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
@@ -30,12 +35,12 @@ class Settings(BaseSettings):
     CORS_ORIGINS: Union[List[str], str] = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
+        "http://localhost:5174",
+        "http://127.0.0.1:5174",
         "http://localhost:3000",
     ]
 
-    # Database Configuration (Local SQLite or PostgreSQL)
-    USE_LOCAL_SQLITE: bool = True
-    SQLITE_DB_PATH: str = "./dealflow360.db"
+    # PostgreSQL Database Configuration
     POSTGRES_SERVER: str = "localhost"
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str = "postgres"
@@ -77,18 +82,19 @@ class Settings(BaseSettings):
     @field_validator("POSTGRES_DSN", mode="before")
     @classmethod
     def assemble_postgres_dsn(cls, v: Optional[str], info) -> str:
-        data = info.data
-        if data.get("USE_LOCAL_SQLITE"):
-            return f"sqlite+aiosqlite:///{data.get('SQLITE_DB_PATH', './dealflow360.db')}"
         if v and isinstance(v, str) and v.strip():
             dsn = v.strip()
-            if dsn.startswith("postgres://"):
-                return dsn.replace("postgres://", "postgresql+asyncpg://", 1)
-            elif dsn.startswith("postgresql://") and not dsn.startswith("postgresql+"):
-                return dsn.replace("postgresql://", "postgresql+asyncpg://", 1)
-            return dsn
-        user = data.get("POSTGRES_USER", "postgres")
-        password = data.get("POSTGRES_PASSWORD", "postgres")
+            # If user configured specific individual credentials but left default DSN, prefer assembled DSN
+            if "postgres:postgres@" not in dsn:
+                if dsn.startswith("postgres://"):
+                    return dsn.replace("postgres://", "postgresql+asyncpg://", 1)
+                elif dsn.startswith("postgresql://") and not dsn.startswith("postgresql+"):
+                    return dsn.replace("postgresql://", "postgresql+asyncpg://", 1)
+                return dsn
+        data = info.data
+        import urllib.parse
+        user = urllib.parse.quote_plus(str(data.get("POSTGRES_USER", "postgres")))
+        password = urllib.parse.quote_plus(str(data.get("POSTGRES_PASSWORD", "postgres")))
         server = data.get("POSTGRES_SERVER", "localhost")
         port = data.get("POSTGRES_PORT", 5432)
         db = data.get("POSTGRES_DB", "dealflow360")

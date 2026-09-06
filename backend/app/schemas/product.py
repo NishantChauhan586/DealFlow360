@@ -48,7 +48,7 @@ class ProductBase(BaseModel):
     category: ProductCategory = Field(..., description="Product category: hardware, service, or subscription")
     description: Optional[str] = Field(default=None, description="Detailed description and specifications")
     unit: str = Field(default="unit", max_length=50, description="Unit of measurement: unit, hour, month, license")
-    tax_rate: float = Field(default=0.0, ge=0.0, le=1.0, description="Applicable tax rate as a decimal (e.g. 0.18 for 18%)")
+    tax_rate: Optional[float] = Field(default=0.0, ge=0.0, le=1.0, description="Applicable tax rate as a decimal (e.g. 0.18 for 18%)")
     is_active: bool = Field(default=True, description="Whether the product is currently sellable and available in catalog")
 
 
@@ -70,8 +70,8 @@ class ProductResponse(ProductBase):
 
     id: uuid.UUID
     variants: List[ProductVariantResponse] = Field(default_factory=list)
-    created_at: datetime
-    updated_at: datetime
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
 
 
 class ProductListResponse(BaseModel):

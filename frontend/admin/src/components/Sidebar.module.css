@@ -1,0 +1,454 @@
+/* ============================================================
+   Sidebar.module.css — DealFlow360 Premium Collapsible Sidebar
+   ============================================================ */
+
+/* ── CSS custom properties ── */
+:root {
+  --sb-expanded: 236px;
+  --sb-collapsed: 64px;
+  --sb-transition: 280ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Shell wrapper: this is what animates ── */
+.sidebar {
+  width: var(--sb-expanded);
+  flex-shrink: 0;
+  background: var(--burnham);
+  color: var(--viridian-100);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  transition: width var(--sb-transition);
+  will-change: width;
+  z-index: 100;
+}
+
+.sidebar.collapsed {
+  width: var(--sb-collapsed);
+}
+
+/* ── Inner container ── */
+.sidebarInner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  border-right: 1px solid rgba(220, 234, 230, 0.06);
+  overflow: hidden;
+}
+
+/* ── Brand header ── */
+.brand {
+  padding: 0 14px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(220, 234, 230, 0.08);
+  flex-shrink: 0;
+  gap: 10px;
+  overflow: hidden;
+  position: relative;
+  transition: padding var(--sb-transition);
+}
+
+.sidebar.collapsed .brand {
+  padding: 0;
+  justify-content: center;
+}
+
+.logoWrap {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--viridian-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+}
+
+.logoInner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.logoImg {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+}
+
+.logoFallback {
+  font-weight: 900;
+  font-size: 15px;
+  color: #fff;
+  font-family: var(--serif);
+  letter-spacing: -0.01em;
+}
+
+/* Collapsed Logo Hover transformation into Expansion Button */
+.logoWrapCollapsed {
+  cursor: pointer;
+}
+
+.logoExpandOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--viridian), var(--viridian-600));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  border-radius: 10px;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 12px rgba(67, 138, 126, 0.6);
+}
+
+.logoWrapCollapsed:hover .logoInner {
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+.logoWrapCollapsed:hover .logoExpandOverlay {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.logoWrapCollapsed:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 14px rgba(67, 138, 126, 0.5);
+}
+
+.logoWrapCollapsed:active {
+  transform: scale(0.95);
+}
+
+.brandText {
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.brandMark {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  color: #fff;
+  line-height: 1;
+}
+
+.brandSub {
+  font-size: 10px;
+  color: var(--viridian-300);
+  margin-top: 3px;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* ── Toggle button (always visible collapse/expand toggle) ── */
+.toggleBtn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(220, 234, 230, 0.15);
+  border-radius: 7px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(220, 234, 230, 0.75);
+  opacity: 1;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+}
+
+.toggleBtn:hover {
+  color: #fff;
+  background: var(--viridian-600);
+  border-color: var(--viridian);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.toggleBtn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.toggleIcon {
+  transition: transform var(--sb-transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Section label ── */
+.sectionLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(220, 234, 230, 0.3);
+  padding: 18px 18px 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: 700;
+}
+
+/* ── Nav container ── */
+.nav {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar.collapsed .nav {
+  padding: 8px 0;
+}
+
+.nav::-webkit-scrollbar { width: 3px; }
+.nav::-webkit-scrollbar-thumb { background: rgba(220,234,230,0.1); border-radius: 3px; }
+
+/* ── Nav item ── */
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 10px;
+  border-radius: 7px;
+  color: rgba(220, 234, 230, 0.65);
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease;
+  width: 100%;
+  text-decoration: none;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+
+.navItem:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+}
+
+.navItem.active {
+  background: rgba(67, 138, 126, 0.22);
+  color: #fff;
+}
+
+/* Active indicator bar */
+.navItem.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: var(--viridian);
+  border-radius: 0 3px 3px 0;
+}
+
+/* ── Icon wrapper ── */
+.navIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  opacity: 0.85;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navItem.active .navIcon { opacity: 1; }
+.navItem:hover .navIcon { opacity: 1; }
+
+.navIcon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ── Nav label ── */
+.navLabel {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Tooltip (collapsed state only) ── */
+.tooltip {
+  position: fixed;
+  left: calc(var(--sb-collapsed) + 8px);
+  background: var(--burnham-600);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  pointer-events: none;
+  white-space: nowrap;
+  border: 1px solid rgba(220,234,230,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.tooltip.visible { opacity: 1; }
+
+/* ── Collapsed state: center icons perfectly ── */
+.sidebar.collapsed .navItem {
+  padding: 10px 0;
+  justify-content: center;
+  border-radius: 0;
+}
+
+/* ── Active badge (for count indicators) ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--viridian);
+  color: #fff;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: rgba(220, 234, 230, 0.06);
+  margin: 6px 10px;
+  flex-shrink: 0;
+}
+
+.sidebar.collapsed .divider {
+  margin: 6px 8px;
+}
+
+/* ── Footer ── */
+.footer {
+  padding: 12px 10px;
+  border-top: 1px solid rgba(220, 234, 230, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-height: 64px;
+}
+
+.sidebar.collapsed .footer {
+  justify-content: center;
+  padding: 12px 0;
+}
+
+/* ── Avatar ── */
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--viridian-600), var(--viridian-300));
+  color: var(--burnham);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 12px;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.footerInfo {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.footerName {
+  color: #fff;
+  font-weight: 600;
+  font-size: 12.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+
+.footerRole {
+  font-size: 10.5px;
+  color: rgba(220, 234, 230, 0.5);
+  font-weight: 500;
+  white-space: nowrap;
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Logout button ── */
+.logoutBtn {
+  background: transparent;
+  border: 1px solid rgba(220, 234, 230, 0.12);
+  color: rgba(220, 234, 230, 0.5);
+  padding: 6px;
+  border-radius: 7px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.logoutBtn:hover {
+  background: rgba(224, 90, 71, 0.15);
+  border-color: rgba(224, 90, 71, 0.4);
+  color: #ff7b72;
+}
+
+/* ── Responsive: auto-collapse on small screens ── */
+@media (max-width: 900px) {
+  .sidebar {
+    width: var(--sb-collapsed);
+  }
+}

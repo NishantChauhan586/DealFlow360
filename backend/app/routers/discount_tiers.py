@@ -13,6 +13,7 @@ from app.schemas.discount_tier import (
     DiscountTierUpdate,
 )
 from app.services.discount_config_service import DiscountConfigService
+from app.routers.events import publish_event
 
 router = APIRouter(prefix="/discount-tiers", tags=["Discount Governance"])
 
@@ -73,7 +74,9 @@ async def create_discount_tier(
     """
     service = DiscountConfigService(session)
     tier = await service.create_discount_tier(tier_in)
-    return DiscountTierResponse.model_validate(tier)
+    validated = DiscountTierResponse.model_validate(tier)
+    await publish_event("discount_tiers", {"action": "create", "tier": validated.model_dump(mode="json")})
+    return validated
 
 
 @router.get(
@@ -108,7 +111,9 @@ async def update_discount_tier(
     """
     service = DiscountConfigService(session)
     updated = await service.update_discount_tier(tier_id, tier_in)
-    return DiscountTierResponse.model_validate(updated)
+    validated = DiscountTierResponse.model_validate(updated)
+    await publish_event("discount_tiers", {"action": "update", "tier": validated.model_dump(mode="json")})
+    return validated
 
 
 @router.delete(
@@ -125,3 +130,5 @@ async def delete_discount_tier(
     """
     service = DiscountConfigService(session)
     await service.delete_discount_tier(tier_id)
+    await publish_event("discount_tiers", {"action": "delete", "tierId": str(tier_id)})
+

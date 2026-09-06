@@ -20,8 +20,10 @@ from app.services.quote_service import (
     delete_quote,
 )
 from app.services.governance_service import evaluate_quote_governance
+from app.routers.events import publish_event
 
 router = APIRouter(prefix="/quotes", tags=["Quotations & Lifecycle"])
+
 
 
 def _attach_explanation(quote_dict: dict) -> dict:
@@ -186,7 +188,9 @@ async def create_new_quote(payload: QuoteCreate, db: AsyncSession = Depends(get_
     Creates a new quotation, calculates margin floors & discount ceilings, and stores in DB.
     """
     q = await create_quote(db, payload)
-    return await get_quote(q.id, db)
+    res = await get_quote(q.id, db)
+    await publish_event("quotes", {"action": "create", "quoteId": q.id})
+    return res
 
 
 @router.put("/{quote_id}", response_model=QuoteResponse, summary="Update Existing Quotation")
@@ -196,7 +200,9 @@ async def update_quote_details(quote_id: str, payload: QuoteUpdate, db: AsyncSes
     """
     try:
         await update_quote(db, quote_id, payload)
-        return await get_quote(quote_id, db)
+        res = await get_quote(quote_id, db)
+        await publish_event("quotes", {"action": "update", "quoteId": quote_id})
+        return res
     except ValueError as err:
         raise HTTPException(status_code=404, detail=str(err))
 
@@ -208,7 +214,9 @@ async def submit_quote(quote_id: str, db: AsyncSession = Depends(get_db)):
     """
     try:
         await submit_quote_for_approval(db, quote_id)
-        return await get_quote(quote_id, db)
+        res = await get_quote(quote_id, db)
+        await publish_event("quotes", {"action": "submit", "quoteId": quote_id})
+        return res
     except ValueError as err:
         raise HTTPException(status_code=400, detail=str(err))
 
@@ -220,7 +228,9 @@ async def approve_quote(quote_id: str, decision: ApprovalDecisionRequest, db: As
     """
     try:
         await process_approval_decision(db, quote_id, decision)
-        return await get_quote(quote_id, db)
+        res = await get_quote(quote_id, db)
+        await publish_event("quotes", {"action": "approve_decision", "quoteId": quote_id, "decision": decision.decision})
+        return res
     except ValueError as err:
         raise HTTPException(status_code=400, detail=str(err))
 
@@ -233,4 +243,6 @@ async def remove_quote(quote_id: str, db: AsyncSession = Depends(get_db)):
     success = await delete_quote(db, quote_id)
     if not success:
         raise HTTPException(status_code=404, detail="Quotation not found.")
+    await publish_event("quotes", {"action": "delete", "quoteId": quote_id})
     return {"message": f"Quotation {quote_id} deleted successfully."}
+

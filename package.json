@@ -6,11 +6,16 @@
     "frontend/*"
   ],
   "scripts": {
-    "dev": "npm run dev --prefix frontend/user",
-    "dev:user": "npm run dev --prefix frontend/user",
-    "build": "npm run build --prefix frontend/user",
-    "build:user": "npm run build --prefix frontend/user",
-    "preview": "npm run preview --prefix frontend/user"
+    "dev": "concurrently \"npm run dev:admin\" \"npm run dev:customer\"",
+    "dev:admin": "npm run dev --workspace dealflow360-admin",
+    "dev:customer": "npm run dev --workspace dealflow360-customer",
+    "build": "npm run build --workspace dealflow360-admin && npm run build --workspace dealflow360-customer",
+    "build:admin": "npm run build --workspace dealflow360-admin",
+    "build:customer": "npm run build --workspace dealflow360-customer",
+    "preview": "npm run preview --workspace dealflow360-admin && npm run preview --workspace dealflow360-customer",
+    "seed": "cd backend && .venv\\Scripts\\python.exe generate_json.py && .venv\\Scripts\\python.exe import_json.py"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
   }
 }
-

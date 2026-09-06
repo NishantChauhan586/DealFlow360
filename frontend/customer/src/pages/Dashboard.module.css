@@ -1,0 +1,164 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  animation: fadeInUp 300ms ease both;
+  max-width: 1440px;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.headerText {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.greeting {
+  font-size: var(--text-xl);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.date {
+  font-size: var(--text-sm);
+  color: var(--color-text-tertiary);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* ── KPI Grid ───────────────────────────────────────────────── */
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-4);
+}
+
+/* ── Mid Row ────────────────────────────────────────────────── */
+.midRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.pipelineCard,
+.chartCard {
+  height: 100%;
+}
+
+/* ── Bottom Row ─────────────────────────────────────────────── */
+.bottomRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 380px;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+/* ── Section Header Elements ────────────────────────────────── */
+.sectionTitle {
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sectionMeta {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+}
+
+.viewAll {
+  font-size: var(--text-xs);
+  color: var(--color-accent-text);
+  font-weight: var(--fw-medium);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--transition-micro);
+}
+
+.viewAll:hover {
+  color: var(--color-text);
+}
+
+/* ── AI Card ────────────────────────────────────────────────── */
+.aiLabel {
+  color: var(--color-accent-text);
+  font-size: 12px;
+}
+
+.aiDemo {
+  font-size: 10px;
+  font-weight: var(--fw-semibold);
+  color: var(--color-accent-text);
+  background-color: var(--color-accent-muted);
+  border: 1px solid var(--color-accent-border);
+  border-radius: var(--radius-full);
+  padding: 2px 7px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 1280px) {
+  .kpiGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .bottomRow {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .aiCard {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .midRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .kpiGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bottomRow {
+    grid-template-columns: 1fr;
+  }
+
+  .page {
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .kpiGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+  }
+
+  .greeting {
+    font-size: var(--text-lg);
+  }
+}

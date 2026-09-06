@@ -1,0 +1,539 @@
+/* ProductManagement.module.css — Editorial Luxury Enterprise SaaS Aesthetics */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Header & Tab navigation */
+.headerCard {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 24px 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 34, 28, 0.04);
+}
+
+.headerTop {
+  display: flex;
+  justifyContent: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.titleArea h2 {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--burnham);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.titleArea p {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: var(--ink-60);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tabNav {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid transparent;
+  overflow-x: auto;
+  margin-top: 4px;
+}
+
+.tabBtn {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 16px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-60);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.tabBtn:hover {
+  color: var(--burnham);
+}
+
+.tabBtn.activeTab {
+  color: var(--burnham);
+  font-weight: 700;
+  border-bottom-color: var(--viridian);
+}
+
+.tabBadge {
+  background: var(--paper-2);
+  color: var(--burnham);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 12px;
+}
+
+/* Toolbar & Filters */
+.toolbarCard {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  display: flex;
+  justifyContent: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  box-shadow: 0 1px 3px rgba(0, 34, 28, 0.04);
+}
+
+.searchGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 240px;
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 10px;
+  width: 15px;
+  height: 15px;
+  color: var(--ink-40);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 380px;
+  padding: 8px 12px 8px 34px;
+  font-size: 13px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.searchInput:focus {
+  background: #ffffff;
+  border-color: var(--viridian);
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.selectInput {
+  padding: 7px 12px;
+  font-size: 13px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #ffffff;
+  color: var(--ink);
+  outline: none;
+  cursor: pointer;
+}
+
+.selectInput:focus {
+  border-color: var(--viridian);
+}
+
+/* Bulk Action Floating Bar */
+.bulkBar {
+  background: var(--burnham);
+  color: #ffffff;
+  border-radius: var(--radius);
+  padding: 10px 18px;
+  display: flex;
+  justifyContent: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  box-shadow: 0 6px 18px rgba(0, 34, 28, 0.16);
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bulkInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.bulkBadge {
+  background: var(--viridian);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.bulkActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btnBulkAction {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  font-size: 12.5px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.btnBulkAction:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.btnBulkDanger {
+  background: rgba(176, 74, 61, 0.3);
+  border-color: rgba(176, 74, 61, 0.5);
+  color: #ffb8b0;
+}
+
+.btnBulkDanger:hover {
+  background: var(--rose);
+  color: #ffffff;
+}
+
+/* Table Card */
+.tableCard {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 34, 28, 0.04);
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.catalogTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.catalogTable th {
+  background: var(--paper-2);
+  color: var(--ink-60);
+  font-weight: 600;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.catalogTable td {
+  padding: 14px;
+  border-bottom: 1px solid rgba(8, 32, 26, 0.06);
+  vertical-align: middle;
+}
+
+.catalogTable tr:hover td {
+  background: rgba(67, 138, 126, 0.03);
+}
+
+/* Product Row Specifics */
+.productCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 240px;
+}
+
+.thumbnail {
+  width: 42px;
+  height: 42px;
+  border-radius: 4px;
+  object-fit: cover;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.productName {
+  font-weight: 600;
+  color: var(--burnham);
+  font-size: 13.5px;
+  line-height: 1.3;
+}
+
+.productSub {
+  font-size: 11.5px;
+  color: var(--ink-60);
+  margin-top: 2px;
+}
+
+.skuBadge {
+  font-family: monospace;
+  font-size: 11px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: var(--ink);
+}
+
+.marginPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.marginHigh {
+  background: var(--viridian-100);
+  color: var(--viridian-600);
+}
+
+.marginMed {
+  background: var(--amber-100);
+  color: var(--amber);
+}
+
+.marginLow {
+  background: var(--rose-100);
+  color: var(--rose);
+}
+
+.actionButtonGroup {
+  display: flex;
+  align-items: center;
+  justifyContent: flex-end;
+  gap: 4px;
+}
+
+.iconBtn {
+  background: transparent;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-60);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.iconBtn:hover {
+  background: var(--paper-2);
+  color: var(--burnham);
+}
+
+.iconBtnDanger:hover {
+  background: var(--rose-100);
+  color: var(--rose);
+}
+
+/* Pagination Bar */
+.paginationBar {
+  padding: 12px 18px;
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  display: flex;
+  justifyContent: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  color: var(--ink-60);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.paginationControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Price List & Tier Cards */
+.priceListGrid {
+  display: grid;
+  grid-templateColumns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.priceListCard {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 1px 3px rgba(0, 34, 28, 0.04);
+  transition: border-color 0.15s ease;
+  position: relative;
+}
+
+.priceListCard.activeCard {
+  border-color: var(--viridian);
+  background: #fafcfb;
+}
+
+.cardTop {
+  display: flex;
+  justifyContent: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cardTitle {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--burnham);
+  margin: 0;
+}
+
+.cardSub {
+  font-size: 12px;
+  color: var(--ink-60);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.cardMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 10px 0;
+}
+
+.metaRow {
+  display: flex;
+  justifyContent: space-between;
+  align-items: center;
+}
+
+.metaLabel {
+  color: var(--ink-40);
+}
+
+.metaValue {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Tier Pricing Matrix Table */
+.tierTableWrapper {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  box-shadow: 0 1px 3px rgba(0, 34, 28, 0.04);
+}
+
+.tierTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.tierTable th {
+  background: var(--paper-2);
+  color: var(--burnham);
+  font-weight: 600;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.tierTable td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(8, 32, 26, 0.06);
+}
+
+.tierPriceInput {
+  width: 85px;
+  padding: 5px 8px;
+  font-size: 12.5px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  font-family: inherit;
+}
+
+.tierPriceInput:focus {
+  border-color: var(--viridian);
+  outline: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .headerTop {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .toolbarCard {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .searchGroup {
+    width: 100%;
+    max-width: none;
+  }
+  .searchInput {
+    max-width: none;
+  }
+}

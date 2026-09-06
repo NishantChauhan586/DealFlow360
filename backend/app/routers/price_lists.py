@@ -11,6 +11,7 @@ from app.schemas.price_list import (
     PriceListUpdate,
 )
 from app.services.pricing_service import PricingService
+from app.routers.events import publish_event
 
 router = APIRouter(prefix="/price-lists", tags=["Price Lists"])
 
@@ -54,7 +55,9 @@ async def create_price_list(
     """
     service = PricingService(session)
     price_list = await service.create_price_list(price_list_in)
-    return PriceListResponse.model_validate(price_list)
+    validated = PriceListResponse.model_validate(price_list)
+    await publish_event("price_lists", {"action": "create", "priceList": validated.model_dump(mode="json")})
+    return validated
 
 
 @router.get(
@@ -89,7 +92,9 @@ async def update_price_list(
     """
     service = PricingService(session)
     updated = await service.update_price_list(price_list_id, price_list_in)
-    return PriceListResponse.model_validate(updated)
+    validated = PriceListResponse.model_validate(updated)
+    await publish_event("price_lists", {"action": "update", "priceList": validated.model_dump(mode="json")})
+    return validated
 
 
 @router.delete(
@@ -106,3 +111,5 @@ async def delete_price_list(
     """
     service = PricingService(session)
     await service.delete_price_list(price_list_id)
+    await publish_event("price_lists", {"action": "delete", "priceListId": str(price_list_id)})
+

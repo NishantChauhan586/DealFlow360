@@ -1,0 +1,571 @@
+/* ============================================================
+   Profile.module.css — DealFlow360 User Profile & Governance
+   ============================================================ */
+
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ---------- Top User Summary Card ---------- */
+.userHeaderCard {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.userHeaderCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--burnham), var(--viridian));
+}
+
+.userProfileLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.avatarContainer {
+  position: relative;
+}
+
+.avatarLarge {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--burnham);
+  color: var(--viridian-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 26px;
+  border: 3px solid var(--viridian-100);
+  box-shadow: 0 4px 12px rgba(0, 34, 28, 0.12);
+  flex-shrink: 0;
+}
+
+.avatarBadge {
+  position: absolute;
+  bottom: 0;
+  right: -2px;
+  background: var(--viridian);
+  color: var(--white);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--white);
+  font-size: 11px;
+}
+
+.userInfo h2 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 24px;
+  margin: 0 0 4px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.userRoleRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--ink-60);
+  margin-bottom: 8px;
+}
+
+.roleDot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ink-40);
+}
+
+.badgesRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tierBadge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--viridian-100);
+  color: var(--viridian-600);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.deptBadge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--paper-2);
+  color: var(--ink-60);
+}
+
+.headerActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ---------- Stat Highlights Grid ---------- */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.statCard {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.statHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: var(--ink-60);
+  font-weight: 500;
+}
+
+.statIcon {
+  color: var(--viridian-600);
+  opacity: 0.8;
+}
+
+.statValue {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--ink);
+}
+
+.statSub {
+  font-size: 11.5px;
+  color: var(--viridian-600);
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* ---------- Tabs Bar ---------- */
+.tabNav {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+}
+
+.tabBtn {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-60);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+  margin-bottom: -1px;
+}
+
+.tabBtn:hover {
+  color: var(--ink);
+}
+
+.tabBtnActive {
+  color: var(--burnham);
+  border-bottom-color: var(--burnham);
+}
+
+/* ---------- Tab Content Panels ---------- */
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.formGridFull {
+  grid-column: 1 / -1;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+
+.input, .select, .textarea {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 13.5px;
+  font-family: var(--sans);
+  background: var(--white);
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  width: 100%;
+}
+
+.input:focus, .select:focus, .textarea:focus {
+  border-color: var(--viridian);
+  box-shadow: 0 0 0 3px rgba(67, 138, 126, 0.15);
+}
+
+.input:disabled, .select:disabled {
+  background: var(--paper);
+  color: var(--ink-60);
+  cursor: not-allowed;
+}
+
+.textarea {
+  min-height: 85px;
+  resize: vertical;
+}
+
+/* ---------- Authority & Governance Card ---------- */
+.governanceGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+}
+
+.ruleBox {
+  background: var(--paper);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 14px;
+  border-left: 3px solid var(--viridian);
+}
+
+.ruleBoxWarning {
+  border-left-color: var(--amber);
+  background: var(--amber-100);
+}
+
+.ruleBoxTitle {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ruleBoxDesc {
+  font-size: 12.5px;
+  color: var(--ink-60);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.authorityList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 18px;
+}
+
+.authorityItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.authorityItem:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.authorityItemTitle {
+  font-weight: 600;
+}
+
+.authorityItemDesc {
+  font-size: 11.5px;
+  color: var(--ink-60);
+  margin-top: 2px;
+}
+
+.authorityItemValue {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--viridian-600);
+}
+
+/* ---------- Toggle Switch Component ---------- */
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.toggleRow:last-child {
+  border-bottom: none;
+}
+
+.toggleText h4 {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.toggleText p {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: var(--ink-60);
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--ink-40);
+  transition: 0.2s;
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.2s;
+  border-radius: 50%;
+}
+
+.switch input:checked + .slider {
+  background-color: var(--viridian);
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* ---------- Notification Item Table ---------- */
+.notifCard {
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  overflow: hidden;
+}
+
+.notifHeader {
+  background: var(--paper-2);
+  padding: 12px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-60);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------- Active Sessions Table ---------- */
+.sessionItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+
+.sessionItem:last-child {
+  border-bottom: none;
+}
+
+.sessionDetails {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.sessionIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: var(--paper-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--burnham);
+}
+
+.sessionMeta {
+  display: flex;
+  flex-direction: column;
+}
+
+.sessionDevice {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sessionLocation {
+  font-size: 11.5px;
+  color: var(--ink-60);
+  margin-top: 2px;
+}
+
+.currentSessionBadge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--viridian-100);
+  color: var(--viridian-600);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* ---------- Toast Banner ---------- */
+.toastBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-radius: 6px;
+  background: var(--burnham);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 4px 14px rgba(0, 34, 28, 0.2);
+}
+
+.toastLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toastClose {
+  background: transparent;
+  border: none;
+  color: var(--viridian-300);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.toastClose:hover {
+  color: var(--white);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1080px) {
+  .userHeaderCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .headerActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .governanceGrid {
+    grid-template-columns: 1fr;
+  }
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .userProfileLeft {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+  .tabNav {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

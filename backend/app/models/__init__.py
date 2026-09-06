@@ -5,9 +5,28 @@ from app.models.discount_tier import DiscountTier
 from app.models.approval_chain import ApprovalChain
 from app.models.user import User
 from app.models.quote import Quote, QuoteItem, ApprovalAudit
-from app.models.fulfillment import Warehouse, FulfillmentRecord
-from app.models.subscription import SubscriptionContract
 from app.models.anomaly import DealAnomaly, StalledDeal
+from app.models.quotation import Quotation, QuotationLine, QuotationStatus
+from app.models.approval_request import ApprovalRequest, ApprovalStepStatus
+from app.models.warehouse import Warehouse, Inventory, FulfillmentSplit, FulfillmentSplitStatus
+from app.models.fulfillment import FulfillmentRecord
+from app.models.subscription import (
+    SubscriptionContract,
+    SubscriptionPlan,
+    Subscription,
+    BillingSchedule,
+    Invoice,
+    CreditNote,
+    SubscriptionInterval,
+    SubscriptionStatus,
+    BillingScheduleStatus,
+    InvoiceStatus,
+    CreditNoteStatus,
+)
+from app.models.product_pairing import ProductPairing
+from app.models.order import Order, OrderLine, OrderStatus
+from app.models.alert import Alert, AlertType, AlertSeverity
+from app.models.audit_log import AuditLog
 
 __all__ = [
     "Base",
@@ -22,9 +41,35 @@ __all__ = [
     "Quote",
     "QuoteItem",
     "ApprovalAudit",
-    "Warehouse",
-    "FulfillmentRecord",
-    "SubscriptionContract",
     "DealAnomaly",
     "StalledDeal",
+    "Quotation",
+    "QuotationLine",
+    "QuotationStatus",
+    "ApprovalRequest",
+    "ApprovalStepStatus",
+    "Warehouse",
+    "Inventory",
+    "FulfillmentSplit",
+    "FulfillmentSplitStatus",
+    "FulfillmentRecord",
+    "SubscriptionContract",
+    "SubscriptionPlan",
+    "Subscription",
+    "BillingSchedule",
+    "Invoice",
+    "CreditNote",
+    "SubscriptionInterval",
+    "SubscriptionStatus",
+    "BillingScheduleStatus",
+    "InvoiceStatus",
+    "CreditNoteStatus",
+    "ProductPairing",
+    "Order",
+    "OrderLine",
+    "OrderStatus",
+    "Alert",
+    "AlertType",
+    "AlertSeverity",
+    "AuditLog",
 ]

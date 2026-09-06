@@ -106,7 +106,7 @@ DealFlow360/
 │   │   │       ├── Fulfillment.jsx      # Multi-warehouse allocation & split delivery
 │   │   │       ├── Subscriptions.jsx    # Contract terms, recurring MRR & billing schedules
 │   │   │       └── Portal.jsx           # Customer counter-proposal & negotiation view
-│   └── user/                            # (Planned) Dedicated Customer Negotiation Portal
+│   └── customer/                        # Dedicated Customer Portal & Operations
 ├── backend/                             # (Planned) Production REST/GraphQL backend & DB
 ├── dealflow360.html                     # Visual prototype & aesthetic benchmark
 └── PROJECT_CONTEXT.md                   # This master context reference
@@ -131,7 +131,7 @@ DealFlow360/
 ## 6. Developer Guidelines for Future Add-Ons
 
 1. **State & Mock Contract Management**:
-   - Add new datasets or state stores inside `frontend/user/src/data/mockData.js`.
+   - Add new datasets or state stores inside `frontend/customer/src/data/mockData.js`.
    - Keep business rule fields explicit (e.g., `discountCeiling`, `marginFloor`, `approvalTier`, `fulfillmentStatus`).
 2. **Page Development Workflow**:
    - Create the page in `src/pages/[PageName].jsx`.

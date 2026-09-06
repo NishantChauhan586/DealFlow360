@@ -14,6 +14,7 @@ from app.schemas.product import (
     ProductVariantResponse,
 )
 from app.services.product_service import ProductService
+from app.routers.events import publish_event
 
 router = APIRouter(prefix="/products", tags=["Products"])
 
@@ -57,7 +58,9 @@ async def create_product(
     """
     service = ProductService(session)
     product = await service.create_product(product_in)
-    return ProductResponse.model_validate(product)
+    validated = ProductResponse.model_validate(product)
+    await publish_event("products", {"action": "create", "productId": str(product.id), "product": validated.model_dump(mode="json")})
+    return validated
 
 
 @router.get(
@@ -92,7 +95,9 @@ async def update_product(
     """
     service = ProductService(session)
     product = await service.update_product(product_id, product_in)
-    return ProductResponse.model_validate(product)
+    validated = ProductResponse.model_validate(product)
+    await publish_event("products", {"action": "update", "productId": str(product.id), "product": validated.model_dump(mode="json")})
+    return validated
 
 
 @router.delete(
@@ -109,7 +114,9 @@ async def delete_product(
     """
     service = ProductService(session)
     product = await service.soft_delete_product(product_id)
-    return ProductResponse.model_validate(product)
+    validated = ProductResponse.model_validate(product)
+    await publish_event("products", {"action": "delete", "productId": str(product.id)})
+    return validated
 
 
 @router.post(
@@ -127,4 +134,7 @@ async def create_product_variant(
     Attach an attribute-based variant (e.g. Size, Color, Region) with price differential.
     """
     service = ProductService(session)
-    return await service.add_variant(product_id, variant_in)
+    variant = await service.add_variant(product_id, variant_in)
+    await publish_event("products", {"action": "variant_added", "productId": str(product_id)})
+    return variant
+
