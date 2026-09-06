@@ -78,37 +78,16 @@ DealFlow360/
 │   └── workflows/                       # Page-building & intelligence workflows
 ├── frontend/
 │   ├── admin/                           # Active Admin Portal (Vite + React 19)
-│   │   ├── package.json                 # React 19, React Router v7, Recharts, GSAP, Three.js
-│   │   ├── vite.config.js
-│   │   ├── src/
-│   │   │   ├── App.jsx                  # Main AppShell, Topbar & React Router definitions
-│   │   │   ├── main.jsx                 # Client entry point
-│   │   │   ├── index.css                # Global CSS variables, layout primitives & resets
-│   │   │   ├── components/
-│   │   │   │   ├── Sidebar.jsx          # Collapsible navigation drawer
-│   │   │   │   ├── Icons.jsx            # Standardized vector icon set
-│   │   │   │   ├── Animations.jsx       # Motion transitions
-│   │   │   │   ├── HeroCanvas.jsx       # Subtle Three.js interactive background
-│   │   │   │   └── dashboard/           # Modular Dashboard widgets
-│   │   │   │       ├── KPICard.jsx
-│   │   │   │       ├── AIInsights.jsx
-│   │   │   │       ├── PerformanceChart.jsx
-│   │   │   │       ├── PipelineOverview.jsx
-│   │   │   │       ├── TaskList.jsx
-│   │   │   │       └── ActivityFeed.jsx
-│   │   │   ├── data/
-│   │   │   │   └── mockData.js          # Central operational dataset & business states
-│   │   │   └── pages/
-│   │   │       ├── Dashboard.jsx        # Command center & operations overview
-│   │   │       ├── Pipeline.jsx         # Lifecycle pipeline & Kanban stage progression
-│   │   │       ├── Builder.jsx          # CPQ Quote Builder with live margin governance
-│   │   │       ├── Approval.jsx         # Multi-tier approval routing & policy audit
-│   │   │       ├── Fulfillment.jsx      # Multi-warehouse allocation & split delivery
-│   │   │       ├── Subscriptions.jsx    # Contract terms, recurring MRR & billing schedules
-│   │   │       └── Portal.jsx           # Customer counter-proposal & negotiation view
+│   │   └── src/                         # Internal operations and governance dashboards
 │   └── customer/                        # Dedicated Customer Portal & Operations
-├── backend/                             # (Planned) Production REST/GraphQL backend & DB
-├── dealflow360.html                     # Visual prototype & aesthetic benchmark
+│       ├── package.json                 # React 19, React Router v7, Recharts, GSAP, Three.js
+│       └── src/                         # Customer-facing deal negotiation and sandbox
+├── backend/                             # Production FastAPI REST Backend
+│   ├── alembic/                         # Database migrations
+│   ├── app/                             # FastAPI application (routers, schemas, services, models)
+│   ├── seed/                            # Database seeding scripts
+│   └── tests/                           # Backend unit and integration tests
+├── package.json                         # Monorepo scripts
 └── PROJECT_CONTEXT.md                   # This master context reference
 ```
 
